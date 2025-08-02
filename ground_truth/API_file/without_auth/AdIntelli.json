@@ -1,0 +1,51 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AdIntelli",
+    "description": "AdIntelli Ad Action",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://gpts.adintelli.ai"
+    }
+  ],
+  "paths": {
+    "/api/fe52092f-83d9-458c-bd2d-a3327ff7bc9c/fetchAds2": {
+      "get": {
+        "operationId": "fetchAds",
+        "summary": "Retrieving a list of relevant ads to display in subsequent chats.",
+        "parameters": [
+          {
+            "name": "context",
+            "in": "query",
+            "description": "context keywords to fetch the relavent ads",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "gpt_name",
+            "in": "query",
+            "description": "The name of this GPTs",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "gpt_description",
+            "in": "query",
+            "description": "The description of this GPTs",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {}
+}

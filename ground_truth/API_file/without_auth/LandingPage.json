@@ -1,0 +1,90 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Landing Page Cache and signup link generator",
+    "description": "Caches generated landing page data and returns a unique signup link",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.hubspot.com"
+    }
+  ],
+  "paths": {
+    "/integrations-ai/v1/landing-page-gpt/data": {
+      "post": {
+        "operationId": "saveLandingPageInfo",
+        "summary": "Saves landing page info and returns a signup link",
+        "requestBody": {
+          "description": "The landing page info to save",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "pageTitle": {
+                        "type": "string"
+                      },
+                      "subheader": {
+                        "type": "string"
+                      },
+                      "paragraph1Header": {
+                        "type": "string"
+                      },
+                      "paragraph1": {
+                        "type": "string"
+                      },
+                      "paragraph2Header": {
+                        "type": "string"
+                      },
+                      "paragraph2": {
+                        "type": "string"
+                      },
+                      "paragraph3Header": {
+                        "type": "string"
+                      },
+                      "paragraph3": {
+                        "type": "string"
+                      },
+                      "cta": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postLandingPageInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "postLandingPageInfoResponse": {
+        "type": "object",
+        "properties": {
+          "previewLink": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

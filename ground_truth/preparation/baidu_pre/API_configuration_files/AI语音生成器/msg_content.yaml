@@ -1,0 +1,46 @@
+# 语音生成操作的状态消息定义
+create_audio:
+  error:
+    # 参数验证失败
+    - errCode: VALIDATION_ERROR
+      actionName: 参数验证失败
+      actionContent: 文本内容不能为空，请输入需要转换为语音的文字内容
+    
+    # 音频生成失败
+    - errCode: GENERATION_FAILED
+      actionName: 语音生成失败
+      actionContent: 无法生成语音文件，请检查文本内容后重试
+    
+    # 超时错误
+    - errCode: TIMEOUT_ERROR
+      actionName: 处理超时
+      actionContent: 语音生成服务响应超时，请稍后重试
+  
+  success:
+    # 处理中状态
+    - errCode: PROCESSING
+      actionName: 生成中
+      actionContent: 正在将文本转换为语音，请稍候...
+    
+    # 完成状态
+    - errCode: COMPLETED
+      actionName: 生成完成
+      actionContent: 语音文件已生成，可点击链接下载
+
+# 通用错误定义
+common:
+  error:
+    # 认证失败
+    - errCode: AUTH_FAILED
+      actionName: 认证失败
+      actionContent: 服务认证未通过，请检查访问权限
+    
+    # 服务不可用
+    - errCode: SERVICE_UNAVAILABLE
+      actionName: 服务不可用
+      actionContent: 语音生成服务暂时不可用，请稍后再试
+    
+    # 未知错误
+    - errCode: UNKNOWN_ERROR
+      actionName: 系统错误
+      actionContent: 发生未知错误，请联系技术支持

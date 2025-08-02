@@ -1,0 +1,20 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "演讲插件",
+    "name_for_model": "presentation_plugin",
+    "description_for_human": "A plugin for creating presentations using ChatGPT.",
+    "description_for_model": "A plugin for creating presentations using ChatGPT.",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "PLUGIN_HOST/.well-known/openapi.yaml"
+    },
+    "logo_url": "https://lingjing-online.cdn.bcebos.com/v1/lingjing-online/plugin_logo/2025-06-17/e36da838-8d33-4d06-9736-556d46ddb3d8.jpg%26ehk%3DnetN2qzcCVS4ALUQfDOwxAwFcy41oxC%252b0xTFvOYy5ds%253d%26risl%3D%26pid%3DImgRaw%26r%3D0",
+    "contact_email": "support@voice.example.com",
+    "legal_info_url": "https://voice.example.com/legal",
+    "examples": {
+        "url": "PLUGIN_HOST/example.yaml"
+    }
+}

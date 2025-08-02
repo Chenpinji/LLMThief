@@ -1,0 +1,313 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Streaming Availability",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.sharpagents.ai",
+      "description": "Streaming Availability API server"
+    }
+  ],
+  "paths": {
+    "/streaming-availability/search/title": {
+      "get": {
+        "summary": "Search by Title",
+        "operationId": "searchByTitle",
+        "x-openai-isConsequential": false,
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "required": true,
+            "description": "Title phrase to search for",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "description": "ISO 3166-1 alpha-2 code of the target country.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "show_type",
+            "in": "query",
+            "required": false,
+            "description": "Type of shows to search in. \"movie\" \"series\" \"all\"",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "series_granularity",
+            "in": "query",
+            "required": true,
+            "description": "series_granularity. \"show\" for general info, or \"season\" or \"episode\".",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "output_language",
+            "in": "query",
+            "required": false,
+            "description": "ISO 639-1 code of the output language.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Limit of titles that the API brings back. Default is 3.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/streaming-availability/search/filters": {
+      "get": {
+        "summary": "Search by Filters",
+        "operationId": "searchByFilters",
+        "x-openai-isConsequential": false,
+        "parameters": [
+          {
+            "name": "services",
+            "in": "query",
+            "required": true,
+            "description": "A comma separated list of up to services to search in.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "description": "ISO 3166-1 alpha-2 code of the target country.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "show_type",
+            "in": "query",
+            "required": false,
+            "description": "Type of shows to search in. \"movie\" \"series\" \"all\"",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "required": false,
+            "description": "A comma seperated list of genre ids",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "genres_relation",
+            "in": "query",
+            "required": false,
+            "description": "For more then one genre. \"and\" \"or\"",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "show_original_language",
+            "in": "query",
+            "required": false,
+            "description": "ISO 639-1 language code to only search within the shows whose original language matches with the provided language.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year_min",
+            "in": "query",
+            "required": false,
+            "description": "Minimum release/air year of the shows.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "year_max",
+            "in": "query",
+            "required": false,
+            "description": "Maximum release/air year of the shows.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "description": "A keyword to only search within the shows have that keyword in their overview or title.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "required": false,
+            "description": "Determines the ordering of the results. Enum \"original_title\" \"year\" \"popularity_alltime\" \"popularity_1year\" \"popularity_1month\" \"popularity_1week\"",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "series_granularity",
+            "in": "query",
+            "required": true,
+            "description": "series_granularity. \"show\" for general info, or \"season\" or \"episode\".",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "output_language",
+            "in": "query",
+            "required": false,
+            "description": "ISO 639-1 code of the output language.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Limit of titles that the API brings back. Default is 3.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/streaming-availability/get": {
+      "get": {
+        "summary": "Get by Id. Get the details of a show via IMDb or TMDb id, including the global streaming availability info.",
+        "operationId": "searchByID",
+        "x-openai-isConsequential": false,
+        "parameters": [
+          {
+            "name": "imdb_id",
+            "in": "query",
+            "required": false,
+            "description": "A comma separated list of up to services to search in. Example imdb_id=tt0120338",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tmdb_id",
+            "in": "query",
+            "required": false,
+            "description": "TMDb ID of the target show. Example tmdb_id=movie/59",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "series_granularity",
+            "in": "query",
+            "required": false,
+            "description": "Type of shows to search in. \"movie\" \"series\" \"all\"",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "output_language",
+            "in": "query",
+            "required": false,
+            "description": "ISO 639-1 code of the output language.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Limit of titles that the API brings back. Default is 3.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/streaming-availability/leaving": {
+      "get": {
+        "summary": "Leaving. Query for the leaving movies/series/seasons/episodes in a given list of streaming services.",
+        "operationId": "searchByLeaving",
+        "x-openai-isConsequential": false,
+        "parameters": [
+          {
+            "name": "services",
+            "in": "query",
+            "required": true,
+            "description": "A comma separated list of up to services to search in.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "description": "ISO 3166-1 alpha-2 code of the target country.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "target_type",
+            "in": "query",
+            "required": true,
+            "description": "Enum \"show\" \"movie\" \"series\" \"season\" \"episode\"",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "output_language",
+            "in": "query",
+            "required": false,
+            "description": "ISO 639-1 code of the output language.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Limit of titles that the API brings back. Default is 3.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {}
+}

@@ -1,0 +1,74 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Create Voice Over API",
+    "description": "Turns a text script into a voice over audio file for download",
+    "version": "v0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://ai.mrc.fm"
+    }
+  ],
+  "paths": {
+    "/api": {
+      "post": {
+        "description": "Turn text into downloadable voice over",
+        "operationId": "TextToSpeech",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextToSpeechRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextToSpeechResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TextToSpeechRequest": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Script to be produced"
+          },
+          "voice": {
+            "type": "string",
+            "description": "Which voice to use"
+          }
+        },
+        "required": [
+          "text",
+          "voice"
+        ]
+      },
+      "TextToSpeechResponse": {
+        "type": "object",
+        "properties": {
+          "link": {
+            "type": "string",
+            "description": "Link to the generated audio file"
+          }
+        }
+      }
+    }
+  }
+}

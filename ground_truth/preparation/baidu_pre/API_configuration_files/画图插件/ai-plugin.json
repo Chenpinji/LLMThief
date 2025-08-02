@@ -1,0 +1,20 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "画图插件",
+    "name_for_model": "画图插件",
+    "description_for_human": "This plugin can create diagrams",
+    "description_for_model": "This plugin can create diagrams",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "PLUGIN_HOST/.well-known/openapi.yaml"
+    },
+    "logo_url": "https://lingjing-online.cdn.bcebos.com/v1/lingjing-online/plugin_logo/2025-06-17/f7260f61-35f6-40e3-a82c-c80448d39ea6.jpg%26ehk%3DnetN2qzcCVS4ALUQfDOwxAwFcy41oxC%252b0xTFvOYy5ds%253d%26risl%3D%26pid%3DImgRaw%26r%3D0",
+    "contact_email": "support@voice.example.com",
+    "legal_info_url": "https://voice.example.com/legal",
+    "examples": {
+        "url": "PLUGIN_HOST/example.yaml"
+    }
+}

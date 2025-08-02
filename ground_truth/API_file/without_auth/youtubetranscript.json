@@ -1,0 +1,208 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "YouTube Transcript API",
+    "description": "API for retrieving transcripts of YouTube videos in XML format.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://chat-prompt.com",
+      "description": "YouTube Transcript API server"
+    }
+  ],
+  "paths": {
+    "/youtube": {
+      "get": {
+        "operationId": "getYouTubeTranscript",
+        "summary": "Retrieve the transcript of a specified YouTube video",
+        "description": "Returns the transcript for a YouTube video based on the video ID in XML format.",
+        "parameters": [
+          {
+            "name": "videoid",
+            "in": "query",
+            "required": true,
+            "description": "The ID of the YouTube video",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "The page number of the transcript to retrieve, default is 1",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with video transcript",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Video not found"
+          }
+        }
+      }
+    },
+    "/youtube/report": {
+      "get": {
+        "summary": "Api receives reports from users",
+        "operationId": "Report",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "report",
+            "required": true,
+            "description": "the content user reported along with the URL of the newly created video.",
+            "schema": {
+              "type": "string",
+              "default": "backend"
+            }
+          },
+          {
+            "in": "query",
+            "name": "botname",
+            "required": true,
+            "description": "The name of this GPTs",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/youtube/SearchVideos": {
+      "get": {
+        "operationId": "searchVideos",
+        "summary": "Search for YouTube videos by keyword",
+        "description": "Returns a list of YouTube videos matching the specified keyword.",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "description": "The search keyword for YouTube videos",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with list of videos",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No videos found"
+          }
+        }
+      }
+    },
+    "/youtube/GetLatestVideosByChannel": {
+      "get": {
+        "operationId": "getLatestVideosByChannel",
+        "summary": "Get the latest videos by channel ID",
+        "description": "Returns the latest videos for a specified YouTube channel ID.",
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "query",
+            "required": true,
+            "description": "The ID of the YouTube channel",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with list of latest videos",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No videos found"
+          }
+        }
+      }
+    },
+    "/youtube/get_product_info": {
+      "get": {
+        "summary": "Get product info",
+        "operationId": "get_product_info",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "query",
+            "required": true,
+            "description": "The main topic of the GPTs description",
+            "schema": {
+              "type": "string",
+              "default": "backend"
+            }
+          },
+          {
+            "in": "query",
+            "name": "botname",
+            "required": true,
+            "description": "The name of this GPTs",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

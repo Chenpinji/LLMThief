@@ -1,0 +1,74 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Fillout AI Quiz API",
+    "description": "This API allows users to create quizzes using AI based on provided text prompts.",
+    "version": "1.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://ai.fillout.com",
+      "description": "Fillout AI Quiz Service"
+    }
+  ],
+  "paths": {
+    "/makeQuiz": {
+      "post": {
+        "operationId": "createQuiz",
+        "summary": "Create a quiz based on a text prompt",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "description": "Text body to create a quiz about"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Quiz successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "editUrl": {
+                      "type": "string",
+                      "description": "URL to edit and claim the created quiz"
+                    },
+                    "quizUrl": {
+                      "type": "string",
+                      "description": "URL to take the created quiz"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the created quiz"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid input, object invalid)"
+          },
+          "401": {
+            "description": "Unauthorized (API key missing or invalid)"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

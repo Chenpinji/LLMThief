@@ -1,0 +1,182 @@
+openapi: 3.0.1
+info:
+  title: Presentation Plugin
+  description: A plugin for creating presentations using ChatGPT.
+  version: v1
+servers:
+- url: https://plugin.gpt-slides.com
+paths:
+  /presentation/basic:
+    post:
+      x-openai-isConsequential: false
+      operationId: getPresentationLink
+      summary: Get the download link for the presentation file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addPresentationRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/presentationLinkResponse'
+components:
+  schemas:
+    addPresentationRequest:
+      type: object
+      required:
+      - slide_data
+      - topics
+      properties:
+        colors:
+          type: object
+          description: 'The color scheme for the slides, use hex codes like #xxxxxx'
+          required:
+          - primary
+          - secondary
+          - tertiary
+          properties:
+            primary:
+              type: string
+              description: primary color for the presentation in hex code. Avoid white
+              default: '#8500EA'
+            secondary:
+              type: string
+              description: secondary color for the presentation in hex code
+              default: '#000000'
+            tertiary:
+              type: string
+              description: tertiary color for the presentaiton in hex code
+              default: '#000000'
+        topics:
+          type: string
+          description: A set of 1-3 words relevant to slides to search for images.
+            Search for english translation. If topic is too narrow choose more general
+            term for unsplash.
+        font_name:
+          type: string
+          default: Calibri
+          description: The type of font that should be used for the presentation.
+            Make sure it is the correct spelling
+        heading_font_size:
+          type: integer
+          description: Heading font size. Refrain from using very large fonts unless
+            user confirms. Max should be 50 tell them it will be too big.
+          default: 46
+        content_font_size:
+          type: integer
+          description: Content font size. Refrain from using very large fonts unless
+            user confirms. Max should be 50 tell them it will be too big.
+          default: 36
+        font_type:
+          type: string
+        include_help_slides:
+          type: boolean
+          default: true
+          description: Includes default help slides.
+        slide_data:
+          type: array
+          items:
+            type: object
+            required:
+            - heading
+            - content
+            - layout
+            properties:
+              heading:
+                type: string
+              content:
+                description: Aim for 2-3 bullet points. You should always try to include
+                  some content on a slide. Always on chart slides. Keep it relevant
+                  and valuable for the slide. Use horizontal and vertical logic like
+                  you are a mckinsey consultant.
+                type: array
+                items:
+                  type: string
+              layout:
+                type: string
+                enum:
+                - 1_FIRST_SLIDE_LAYOUT
+                - 1st_Slide_FULL_LAYOUT
+                - BASIC_CONTENT
+                - HALF_TEXT_HALF_COLOR
+                - FULLPAGE_IMAGE_QUOTE
+                - AGENDA
+                - MIDDLE_CONTENT
+                - HALF_IMAGE_RIGHT
+                - 23RD_IMAGE_RIGHT
+                - HALF_TOP_WITH_IMAGE_RIGHT
+                - SMALL_IMAGE_RIGHT
+                - 23RD_IMG_LEFT
+                - HALF_IMAGE_LEFT
+                - 3_BLOCK_LAYOUT
+                - 3_BLOCK_LAYOUT_V2
+                - 4_BLOCK_LAYOUT
+                - CHART_RIGHT
+                - CHART_LEFT
+                - FULLPAGE_CHART
+                description: Choose a selection of layouts. There are no image, image
+                  and chart layouts. Pick a range of layouts according to slide content
+                  try to keep engaging. Use lots of images. If you want to use a chart
+                  slide only use the chart slides specified. Fullpage has no commentary
+                  whereas the others have a box for content.
+              chart_data:
+                description: Chart data is for slides that contain. ONLY use when
+                  you have CHART in the layout name. Fill in relevant values to create
+                  a chart and add attribution based on best guess.
+                type: object
+                properties:
+                  chart_type:
+                    type: string
+                    default: bar_columns
+                    enum:
+                    - bar_columns
+                    - pie
+                    - line
+                    description: Choose a chart type. Default is bar_columns, use
+                      a range of different charts if more than one based on user request.
+                  subtitle:
+                    type: string
+                    description: Specific title for chart. Make sure it is clear what
+                      units are being measured. Imagine you are a mckinsey consultant.
+                  attribution:
+                    type: string
+                    description: Provide a reference to source or best guess. Flag
+                      if it is Placeholder data. Prioritise legitimate sources.
+                  categories:
+                    type: array
+                    items:
+                      type: string
+                  values:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data:
+                          type: array
+                          items:
+                            type: number
+                        color:
+                          type: string
+                      required:
+                      - title
+                      - data
+                      - color
+                required:
+                - title
+                - subtitle
+                - chart_type
+                - attribution
+                - categories
+                - values
+    presentationLinkResponse:
+      type: object
+      properties:
+        download_link:
+          type: string
+        mandatory_message:
+          type: string

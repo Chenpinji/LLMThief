@@ -1,0 +1,99 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Keenious Excover API",
+    "version": "0.1.0",
+    "description": "API for searching articles"
+  },
+  "servers": [
+    {
+      "url": "https://keenious.com/api"
+    }
+  ],
+  "paths": {
+    "/search/chatgpt": {
+      "post": {
+        "summary": "Search for articles",
+        "operationId": "searchForArticles",
+        "requestBody": {
+          "description": "Search request parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query_texts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "tag": {
+                          "type": "string"
+                        },
+                        "text": {
+                          "type": "string"
+                        },
+                        "weight": {
+                          "type": "number",
+                          "default": 1
+                        }
+                      },
+                      "required": [
+                        "tag",
+                        "text"
+                      ]
+                    }
+                  },
+                  "query_string": {
+                    "type": "string"
+                  },
+                  "filters": {
+                    "type": "object",
+                    "properties": {
+                      "cited_by_count_min": {
+                        "type": "integer"
+                      },
+                      "cited_by_count_max": {
+                        "type": "integer"
+                      },
+                      "publication_year_min": {
+                        "type": "integer"
+                      },
+                      "publication_year_max": {
+                        "type": "integer"
+                      },
+                      "is_oa": {
+                        "type": "boolean"
+                      },
+                      "has_abstract": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "default": 10
+                  }
+                },
+                "required": [
+                  "query_texts"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search operation"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

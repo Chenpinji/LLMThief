@@ -1,0 +1,80 @@
+{
+  "info": {
+    "title": "Relevance AI Tools",
+    "version": "latest"
+  },
+  "paths": {
+    "/studios/f0b9e840-215b-4f0b-a830-192ad61bffca/trigger_llm_friendly": {
+      "post": {
+        "operationId": "Google_search",
+        "summary": "Google search",
+        "description": "Search the internet for the latest information about a topic",
+        "security": [
+          {
+            "AuthorizationHeader": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/f0b9e840-215b-4f0b-a830-192ad61bffcaRequestBodySchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://agents.relevance.ai/d7b62b/latest"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "f0b9e840-215b-4f0b-a830-192ad61bffcaRequestBodySchema": {
+        "properties": {
+          "search_query": {
+            "type": "string",
+            "title": "Google search query",
+            "description": "A really high quality google search prompt",
+            "frontend_metadata": {
+              "required": true
+            },
+            "order": 0
+          }
+        },
+        "required": [
+          "search_query"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "AuthorizationHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Authorization credentials. Header authorization should be in the form of: project:api_key"
+      }
+    }
+  },
+  "security": [
+    {
+      "AuthorizationHeader": [
+        "Authorization"
+      ]
+    }
+  ]
+}

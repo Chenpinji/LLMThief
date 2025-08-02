@@ -1,0 +1,100 @@
+components:
+  schemas:
+    CreateDocumentIndirectlyWithGptRequestV2:
+      type: object
+      required:
+        - prompt
+      properties:
+        language:
+          type: string
+          default: en
+          description: The two-digit ISO 639-1 code representing the expected human language for the document content.
+        openaiFileIdRefs:
+          type: array
+          default: []
+          description: >
+            List of files to use during document generation, such as images or PDF / DOCX / PPTX files.
+          items:
+            type: object
+            required:
+              - name
+              - id
+              - mime_type
+              - download_link
+            properties:
+              name:
+                type: string
+                description: File name
+              id:
+                type: string
+                description: File ID
+              mime_type:
+                type: string
+                description: MIME type
+              download_link:
+                type: string
+                format: uri
+                description: File download URL
+        pageCount:
+          type: integer
+          default: 5
+          description: The number of document pages (or number of presentation slides) to generate.
+        prompt:
+          type: string
+          description: Instructions used by GPT-3.5 model to generate the document.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            type: string
+          type: array
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      type: object
+info:
+  description: A GPT that allows the user to create a presentation.
+  title: Slide Maker GPT
+  version: v1
+openapi: 3.0.1
+paths:
+  /create_pptx_indirectly_with_gpt:
+    post:
+      description: Create a presentation indirectly by prompting a GPT model specialized
+        for generating long presentations
+      operationId: create_pptx_indirectly_with_gpt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDocumentIndirectlyWithGptRequestV2'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Generate a long-form presentation via GPT prompt
+
+      x-openai-isConsequential: false
+servers:
+- url: https://gpt.slides.aidocmaker.com

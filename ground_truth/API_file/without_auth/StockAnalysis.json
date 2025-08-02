@@ -1,0 +1,451 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "gpt_manual_json_operations",
+    "description": "Service to execute manual JSON operations with specified parameters.",
+    "version": "v1.0"
+  },
+  "servers": [
+    {
+      "url": "https://community-service.ttm.financial/v1/gpt/functions"
+    }
+  ],
+  "paths": {
+    "/Why_is_it_moving": {
+      "post": {
+        "operationId": "Why_is_it_moving",
+        "x-openai-isConsequential": false,
+        "summary": "Search for the reason why a stock's price soar or plunge.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "stock",
+                  "question"
+                ],
+                "properties": {
+                  "stock": {
+                    "type": "string",
+                    "description": "please enter the company's name that exist in the query, do not change the name and split by comma for multi companies."
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Please enter the date or date range that exists in the query. Return in format of  yyyy-mm-dd for a single date, yyyy-mm-dd~yyyy-mm-dd for date range and split by commas for multi date range."
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "User question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/StandardResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/StandardResponse"
+          }
+        }
+      }
+    },
+    "/Stock_Quote_Latest": {
+      "post": {
+        "operationId": "Stock_Quote_Latest",
+        "x-openai-isConsequential": false,
+        "summary": "Quote and market indicators for a company, such as stock price, trading volume, etc. This function can only search indicator number. If you want to analyze a stock, do not use this function and use Stock_Analysis instead",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "stock",
+                  "question"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "Quote Data",
+                      "Option Data",
+                      "Trading Status",
+                      "Capital Data"
+                    ],
+                    "description": "The type of market data to retrieve for the specified stock."
+                  },
+                  "stock": {
+                    "type": "string",
+                    "description": "Please enter the company's name that exists in the query, do not change the name and split by comma for multi companies."
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "User question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/StandardResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/StandardResponse"
+          }
+        }
+      }
+    },
+    "/Economic_Calendar": {
+      "post": {
+        "operationId": "Economic_Calendar",
+        "x-openai-isConsequential": false,
+        "summary": "Search the report date of company's earnings, dividend and macroeconomic data or search the event list by certain period",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "question"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "Earnings",
+                      "Dividend",
+                      "Economic data"
+                    ],
+                    "description": "The type of Calendar"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Certain date or date range you want to search, return in format yyyy-mm-dd. For a date range, return in format yyyy-mm-dd~yyyy-mm-dd.For Multiple date ranges are returned in the format yyyy-mm-dd~yyyy-mm-dd, yyyy-mm-dd~yyyy-mm-dd."
+                  },
+                  "stock": {
+                    "type": "string",
+                    "description": "Please enter the company's name that exists in the query, do not change the name and split by comma for multi companies."
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "User question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/StandardResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/StandardResponse"
+          }
+        }
+      }
+    },
+    "/Stock_Quote_History": {
+      "post": {
+        "operationId": "Stock_Quote_History",
+        "x-openai-isConsequential": false,
+        "summary": "Search for stock quote information of a historical day, only available for stock's open price, close price, low price, high price, Quote change rate and Turnover. If you want to analyze a stock, do not use this operation and use Stock_Analysis instead",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "stock",
+                  "time",
+                  "question"
+                ],
+                "properties": {
+                  "time": {
+                    "type": "string",
+                    "description": "Certain date or date range you want to search, return in format yyyy-mm-dd. For a date range, return in format yyyy-mm-dd~yyyy-mm-dd. For multiple date ranges, return in the format yyyy-mm-dd~yyyy-mm-dd, yyyy-mm-dd~yyyy-mm-dd."
+                  },
+                  "stock": {
+                    "type": "string",
+                    "description": "Please enter the company's name that exists in the query, do not change the name and split by comma for multi companies."
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "User question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/StandardResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/StandardResponse"
+          }
+        }
+      }
+    },
+    "/Brand_Info": {
+      "post": {
+        "operationId": "Brand_Info",
+        "x-openai-isConsequential": false,
+        "summary": "Search for the introduction of Tiger Brokers and its platform Tiger Trade, including Tiger Broker's founder, investor, business, licenses, data security, contact and other Tiger Brokers or Tiger Trade related profile.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "query",
+                  "question"
+                ],
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "description": "Enter your query related to Tiger Brokers and its platform Tiger Trade, including information about the founder, investor, business, licenses, data security, contact, and other related profiles."
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "User question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/StandardResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/StandardResponse"
+          }
+        }
+      }
+    },
+    "/Earnings_Data": {
+      "post": {
+        "operationId": "Earnings_Data",
+        "x-openai-isConsequential": false,
+        "summary": "Company's financial report data, such as earnings report date, earnings call transcript, profit, revenue, eps, etc.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "earningsPeriod",
+                  "type",
+                  "stock",
+                  "question"
+                ],
+                "properties": {
+                  "earningsPeriod": {
+                    "type": "string",
+                    "description": "If you need to search for the earnings of a specific quarter, please enter the company's earnings period in the format of yyyyQx, where yyyy refers to the year and Qx refers to the quarter, yyyyFY refers to the full year report. If not specified, the latest earnings will be returned as default."
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "Reported Result",
+                      "Estimate Data",
+                      "Earnings Date"
+                    ],
+                    "description": "The type of financial report data you are looking for."
+                  },
+                  "stock": {
+                    "type": "string",
+                    "description": "Please enter the company's name that exists in the query, do not change the name and split by comma for multi companies."
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "User question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/StandardResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/StandardResponse"
+          }
+        }
+      }
+    },
+    "/News_Viewpoints": {
+      "post": {
+        "operationId": "News_Viewpoints",
+        "x-openai-isConsequential": false,
+        "summary": "Search for news and articles about stocks, events and market.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "question"
+                ],
+                "properties": {
+                  "sentiment": {
+                    "type": "string",
+                    "enum": [
+                      "Bullish",
+                      "Bearish",
+                      "Neutral"
+                    ],
+                    "description": "Search for news with certain sentiment."
+                  },
+                  "keywords": {
+                    "type": "string",
+                    "description": "Search news that contain certain keywords, split by commas for multi keywords."
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Please enter the date or date range for the news search."
+                  },
+                  "stock": {
+                    "type": "string",
+                    "description": "Search news about specific companies, split by commas for multi companies."
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "User question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/StandardResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/StandardResponse"
+          }
+        }
+      }
+    },
+    "/Stock_Analysis": {
+      "post": {
+        "operationId": "Stock_Analysis",
+        "x-openai-isConsequential": false,
+        "summary": "Stock's valuation, trend analysis, target price, capital flow and other indicators for investment decisions.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "stock",
+                  "question"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "STOCK OVERVIEW",
+                      "VALUATION ANALYSIS",
+                      "TREND ANALYSIS",
+                      "INVESTMENT ADVICE",
+                      "STOCK COMPARISON",
+                      "TARGET PRICE FORECAST"
+                    ],
+                    "description": "The type of analysis required."
+                  },
+                  "stock": {
+                    "type": "string",
+                    "description": "Please enter the company's name for analysis."
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "User question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/StandardResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/StandardResponse"
+          }
+        }
+      }
+    },
+    "/Company_Profile": {
+      "post": {
+        "operationId": "Company_Profile",
+        "x-openai-isConsequential": false,
+        "summary": "Basic company information, including staff members, contact info, dividend info, shareholder's information, etc.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "stock",
+                  "question"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "Basic Info",
+                      "Manager&Shareholder Info",
+                      "Business Info",
+                      "Dividend Info"
+                    ],
+                    "description": "The type of company information required."
+                  },
+                  "stock": {
+                    "type": "string",
+                    "description": "Please enter the company's name for which information is required."
+                  },
+                  "question": {
+                    "type": "string",
+                    "description": "User question"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/StandardResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/StandardResponse"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

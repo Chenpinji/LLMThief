@@ -1,0 +1,101 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TestingCatalog API",
+    "version": "1.0.0",
+    "description": "This API is used to fetch various RSS feeds and the sitemap from TestingCatalog, including content related to ChatGPT, Microsoft Copilot, Bard, and more."
+  },
+  "servers": [
+    {
+      "url": "https://www.testingcatalog.com",
+      "description": "TestingCatalog Main Server"
+    }
+  ],
+  "paths": {
+    "/rss": {
+      "get": {
+        "operationId": "getGeneralRssFeed",
+        "summary": "Fetches a general RSS feed.",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          }
+        }
+      }
+    },
+    "/tag/chatgpt/rss": {
+      "get": {
+        "operationId": "getChatGptRssFeed",
+        "summary": "Fetches the RSS feed for ChatGPT-related content.",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          }
+        }
+      }
+    },
+    "/tag/microsoft-copilot/rss": {
+      "get": {
+        "operationId": "getMicrosoftCopilotRssFeed",
+        "summary": "Fetches the RSS feed for Microsoft Copilot-related content.",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          }
+        }
+      }
+    },
+    "/tag/gemini/rss": {
+      "get": {
+        "operationId": "getGeminiRssFeed",
+        "summary": "Fetches the RSS feed for Gemini-related content.",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          }
+        }
+      }
+    },
+    "/tag/perplexity/rss": {
+      "get": {
+        "operationId": "getPerplexityRssFeed",
+        "summary": "Fetches the RSS feed for Perplexity-related content.",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          }
+        }
+      }
+    },
+    "/tag/claude/rss": {
+      "get": {
+        "operationId": "getClaudeRssFeed",
+        "summary": "Fetches the RSS feed for Claude-related content.",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          }
+        }
+      }
+    },
+    "/sitemap-posts.xml": {
+      "get": {
+        "operationId": "getSitemap",
+        "summary": "Fetches the sitemap XML.",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

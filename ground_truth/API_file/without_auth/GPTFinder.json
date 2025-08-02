@@ -1,0 +1,78 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GPT-Search API",
+    "description": "API that allows GPT to search GPTs.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://gpt.search.quanthium.io",
+      "description": "GPT Search on Quanthium.io"
+    }
+  ],
+  "paths": {
+    "/indexes/gpt_store/search": {
+      "get": {
+        "summary": "Search a query in search engine",
+        "operationId": "searchMeili",
+        "tags": [
+          "search"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "description": "Search query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "hits": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "author": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "nbHits": {
+                      "type": "integer",
+                      "description": "Total number of results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

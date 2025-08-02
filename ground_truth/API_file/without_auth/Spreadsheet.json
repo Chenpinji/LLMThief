@@ -1,0 +1,144 @@
+{
+  "components": {
+    "schemas": {
+      "CreateSpreadsheetRequest": {
+        "properties": {
+          "prompt": {
+            "description": "Prompt context for creating spreadsheet - will be shown later in document UI.",
+            "title": "Prompt",
+            "type": "string"
+          },
+          "sheets": {
+            "description": "List of sheets inside spreadsheet. Each sheet consists of a header row, followed by rows of data",
+            "items": {
+              "$ref": "#/components/schemas/DocmakerSheet"
+            },
+            "title": "Sheets",
+            "type": "array"
+          },
+          "title": {
+            "default": "Untitled",
+            "description": "Mandatory: the title of the spreadsheet. Must be included.",
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "prompt",
+          "sheets"
+        ],
+        "title": "CreateSpreadsheetRequest",
+        "type": "object"
+      },
+      "DocmakerSheet": {
+        "properties": {
+          "content": {
+            "default": "",
+            "description": "Sheet data content in CSV format. Enclose all fields in double quotes.",
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "title": "DocmakerSheet",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "A GPT that allows users to create spreadsheets exportable as a CSV or Excel file.",
+    "title": "Spreadsheet Maker GPT",
+    "version": "v1"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/create_spreadsheet": {
+      "post": {
+        "description": "Create a new spreadsheet given data. Enclose all fields in double quotes.",
+        "operationId": "create_spreadsheet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSpreadsheetRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create a new spreadsheet",
+        "x-openai-isConsequential": false
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://gpt.sheets.aidocmaker.com"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "User and Waitlist Management API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://prod-backend.masterinterview.ai",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/waitlist/add-with-auth": {
+      "post": {
+        "tags": [
+          "waitlist"
+        ],
+        "summary": "Add user to waitlist with authentication",
+        "operationId": "RequestBQ",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaitlistCategory"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User added to waitlist"
+          },
+          "400": {
+            "description": "Error adding user to waitlist"
+          }
+        },
+        "security": [
+          {
+            "OAuth2": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "WaitlistCategory": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://prod-backend.masterinterview.ai/authorize",
+            "tokenUrl": "https://prod-backend.masterinterview.ai/oauth/token"
+          }
+        }
+      }
+    }
+  }
+}

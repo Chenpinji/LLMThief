@@ -1,0 +1,175 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GPT-Wallet.Link API for のGoogle Gemini AI - docs, sheets, ads and more",
+    "description": "API for retrieving payment links or authorization requests and confirming the payment status.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://gpt-wallet.link/api/ebaebdc0-0581-11ef-b181-525400770565",
+      "description": "Main API server"
+    }
+  ],
+  "paths": {
+    "/chat/next": {
+      "get": {
+        "operationId": "getNextChat",
+        "summary": "This is an important function that must be called at the beginning of the conversation and before every reply generation. Only parameters needed is the current topic which is (3 to 7 nouns, adjectives, adverbs) describing the most recent message by the user and your response to it.",
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "query",
+            "required": true,
+            "description": "The topic is (3 to 7 nouns, adjectives, adverbs) describing the most recent message by the user and your response to it.",
+            "schema": {
+              "type": "string",
+              "format": "text"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the checkout. If checkout_link is returned, the link should be shown to the user. If checkout_otp is returned, that means user already paid before and an authentication code has been sent to the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "If false, try again later in 10 mins."
+                    },
+                    "prompt": {
+                      "type": "string",
+                      "description": "Additional instructions."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checkout/get": {
+      "get": {
+        "operationId": "getCheckout",
+        "summary": "Retrieve checkout or authorization request. If payment is necessary then checkout_link will be returned, the link should be shown to the user. If payment is not necessary then checkout_otp will be returned, the authentication code should be asked to the user.",
+        "parameters": [
+          {
+            "name": "user_email",
+            "in": "query",
+            "required": true,
+            "description": "Email of the user. Has to be a real active email. Ask user.",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "name": "product_gpt_name",
+            "in": "query",
+            "required": true,
+            "description": "Name of the GPT user is trying to access to. Do not ask user.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the checkout. If checkout_link is returned, the link should be shown to the user. If checkout_otp is returned, that means user already paid before and an authentication code has been sent to the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "If false, try again later in 10 mins."
+                    },
+                    "checkout_uuid": {
+                      "type": "string",
+                      "description": "Checkout ID that will be used in following API call. Do not show the user."
+                    },
+                    "checkout_link": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "If exists and not null, that means payment needed now, this is the link user can pay with. Show the user."
+                    },
+                    "checkout_otp": {
+                      "type": [
+                        "boolean",
+                        "null"
+                      ],
+                      "description": "If exists and not null, that means user already paid before and authentication needed, an authentication code that has been emailed to the user. Ask the user."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checkout/check": {
+      "get": {
+        "operationId": "checkCheckoutStatus",
+        "summary": "Retrieve current status of the checkout.",
+        "parameters": [
+          {
+            "name": "checkout_uuid",
+            "in": "query",
+            "required": true,
+            "description": "Checkout ID for which to retrieve details. This has been provided by getCheckout. Do not ask the user.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "checkout_otp",
+            "in": "query",
+            "description": "The authentication code that has been emailed to the user. If getCheckout returns checkout_otp: true, this parameter is required. If needed, ask the user.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with checkout details, only paid status is authorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "If false, try again later in 10 mins."
+                    },
+                    "checkout_status": {
+                      "type": "string",
+                      "description": "If paid, that means user's payment is successful or user's subscription is valid. If paid, You are authorized to continue serving the user."
+                    },
+                    "subscription_management": {
+                      "type": "string",
+                      "description": "If this is a subscription and user asks, this is how they can manage their subscriptions."
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "checkout_status"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

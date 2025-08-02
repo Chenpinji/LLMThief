@@ -1,0 +1,84 @@
+openapi: 3.0.1
+info:
+  title: Show Me
+  version: 0.1.0
+  description: A diagram rendering API that allows users to get syntax help and render diagrams.
+servers:
+- url: https://diagrams.helpful.dev
+  description: Development server
+paths:
+  /v2/diagram-syntax-documentation:
+    get:
+      operationId: get_DiagramSyntaxDocumentation
+      description: Get syntax documentation before calling render diagram action
+      x-openai-isConsequential: false
+      parameters:
+      - required: true
+        schema:
+          type: string
+          description: Type of diagram to get syntax documentation for
+          enum:
+          - sequenceDiagram
+          - mindmap
+          - sankey
+          - classDiagram
+          - timeline
+          - flowchart
+        name: diagramType
+        in: query
+      responses:
+        '200':
+          description: Returns the syntax documentation for the specified diagram
+            type
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  diagramSyntaxDocumentation:
+                    type: string
+                  systemInstructions:
+                    type: string
+                    description: Additional instructions for the system
+                required:
+                - diagramSyntaxDocumentation
+  /v2/render-diagram:
+    post:
+      operationId: post_RenderDiagram
+      summary: Render diagram from source
+      x-openai-isConsequential: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 2-4 words describing the diagram
+                  example: Airline Expenses Sankey Diagram
+                diagramSource:
+                  type: string
+                  description: Diagram source to render
+              required:
+              - title
+              - diagramSource
+      responses:
+        '200':
+          description: Render result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sayToUser:
+                    type: string
+                    description: What to say to the user
+                  systemInstructions:
+                    type: string
+                    description: Additional instructions for the system
+                required:
+                - sayToUser
+                - systemInstructions
+      parameters: []
+components: {}

@@ -1,0 +1,125 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GPT4Consultant",
+    "description": "create slide preview.",
+    "version": "v0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://gpt4consultant.com"
+    }
+  ],
+  "paths": {
+    "/api/prompts": {
+      "get": {
+        "description": "get prompts from g4c to create slides (presentation)",
+        "operationId": "GetPrompts",
+        "parameters": [
+          {
+            "name": "slide_bodys",
+            "in": "query",
+            "description": "the category of body to create slides of presenation.",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "title",
+                  "business model",
+                  "cause and result",
+                  "compare",
+                  "price",
+                  "example",
+                  "reason",
+                  "detail",
+                  "kpi",
+                  "organization"
+                ]
+              }
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/api/slidepreview": {
+      "post": {
+        "description": "create slide preview.",
+        "operationId": "CreateSlidePreview",
+        "parameters": [
+          {
+            "name": "slide_outline",
+            "in": "body",
+            "description": "outline of slide with powermark (combined markdown and arranged mermaid syntax)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "standardExample": {
+                "summary": "slide size is 1280px x 720px. h1(=# ) is a slide title. You can use h1 only 1 time in one slide. h2(=## ) is a slide subtitle. You can use h2 maximum 3 times in one slide because h2 will line up in the row direction with equal width and spacing.",
+                "value": {
+                  "slide_outline": "# [title]\n- [main message]\n\n## [subtitle]\n- [sub message]\n"
+                }
+              },
+              "multipleSlidesExample": {
+                "summary": "if you want multiple slides, divide by ----.",
+                "value": {
+                  "slide_outline": "# [1st slide title]\n- [1st slide main message]\n\n## [1st slide sub title]\n- [1st sub message]\n\n----\n\n# [2nd slide title]\n- [2nd slide main message]\n\n## [2nd slide sub title]\n- [2nd sub message]\n\n----\n\n# [3rd slide title]\n- [3rd slide main message]\n\n## [3rd slide sub title]\n- [3rd sub message]\n\n----\n\n# [4th slide title]\n- [4th slide main message]\n\n## [4th slide sub title]\n- [4th sub message]\n\n----\n\n# [5th slide title]\n- [5th slide main message]\n\n## [5th slide sub title]\n- [5th sub message]\n\n----\n\n# [6th slide title]\n- [6th slide main message]\n\n## [6th slide sub title]\n- [6th sub message]\n\n----\n\n# [7th slide title]\n- [7th slide main message]\n\n## [7th slide sub title]\n- [7th sub message]\n\n----\n\n# [8th slide title]\n- [8th slide main message]\n\n## [8th slide sub title]\n- [8th sub message]\n"
+                }
+              },
+              "kpiTreeExample": {
+                "summary": "If you want to express a KPI tree, use mermaid style flowchart.",
+                "value": {
+                  "slide_outline": "# [title]\n- [main message]\n\n## [kpi tree title]\nA[margin] --(-)--- B[revenue]\nA[margin] --(-)--- C[cost]\nB --(*)--- D[Active User]\nB --(*)--- E[Revenue per User]\nC --(+)--- F[Sales & Marketing]\nC --(+)--- G[R&D]\nC --(+)--- H[General & Administrative]\n\n---\n\n## [kpi tree detail]\n| KPI | overview |\n| Active User | [details] |\n| Revenue per User | [details] |\n| Sales & Marketing | [details] |\n| R&D | [details] |\n| General & Administrative | [details] |\n\n"
+                }
+              },
+              "businessModelExample": {
+                "summary": "If you want to express a business model, use mermaid style flowchart.",
+                "value": {
+                  "slide_outline": "# [title].\n- [message about of the points of the flow]\n\n## [business model]\nA[seller] --1. product---> C[buyer]\nC --2. money---> B[platformer] --3. money---> A\n\n---\n\n## [flow point] 1.\n- 1. detail point of product which is sold by seller to buyer\n- 2. detail point of money passed from buyer to platformer\n- 3. detail point of money passed from platformer to seller\n"
+                }
+              },
+              "examplesExample": {
+                "summary": "If you want to express some examples of the main message, use h2 for one example. You can use h2 only 3 times in one slide",
+                "value": {
+                  "slide_outline": "# [title]\n- [message about summary of col 1 to 3]\n\n## [col 1]\n- [detail 1]\n\n## [col 2]\n- [detail 2]\n\n## [col 3]\n- [detail 3]\n"
+                }
+              },
+              "reasonExample": {
+                "summary": "If you want to express some reasons of the main message, use h2 for one reason. You can use h2 only 3 times in one slide",
+                "value": {
+                  "slide_outline": "# [title]\n- [message about summary of col 1 to 3]\n\n## [col 1]\n- [detail 1]\n\n## [col 2]\n- [detail 2]\n\n## [col 3]\n- [detail 3]\n"
+                }
+              },
+              "keyPointsExample": {
+                "summary": "If you want to express some key points of the main message, use h2 for one point. You can use h2 only 3 times in one slide",
+                "value": {
+                  "slide_outline": "# [title]\n- [message about summary of col 1 to 3]\n\n## [col 1]\n- [detail 1]\n\n## [col 2]\n- [detail 2]\n\n## [col 3]\n- [detail 3]\n"
+                }
+              },
+              "causeAndResultExample": {
+                "summary": "If you want to express some cause lead to an result, use >>> to divide the cause h2 and result h2.",
+                "value": {
+                  "slide_outline": "# [title]\n- [message about cause and the result]\n\n## [cause]\n- [detail of cause]\n  - [subdetail of cause]\n  - [subdetail of cause]\n  - [subdetail of cause]\n\n>>>\n\n## [result]\n- [detail of result]\n  - [subdetail of result]\n  - [subdetail of result]\n  - [subdetail of result]\n"
+                }
+              },
+              "compareExample": {
+                "summary": "If you want to compare more than 4 examples use markdown style tables.",
+                "value": {
+                  "slide_outline": "# [title]\n- [message about col n is better than others in point N]\n\n## [table title]\n|points |col 1|col 2|col 3|col 4| \n| point A |col 1|col 2|col 3|col 4| \n| point B |col 1|col 2|col 3|col 4| \n| point C |col 1|col 2|col 3|col 4| \n| point D |col 1|col 2|col 3|col 4| \n"
+                }
+              }
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

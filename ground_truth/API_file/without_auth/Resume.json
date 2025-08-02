@@ -1,0 +1,289 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Job Search and Query Parsing API",
+    "description": "APIs for parsing search queries and searching jobs",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://swan-api.jobright.ai"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "FilterCondition": {
+        "type": "object",
+        "properties": {
+          "jobTitle": {
+            "type": "string"
+          },
+          "jobTypes": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "seniority": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "companyCategory": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "annualSalaryMinimum": {
+            "type": "integer",
+            "nullable": true
+          },
+          "isH1BOnly": {
+            "type": "boolean"
+          },
+          "roleType": {
+            "type": "string",
+            "nullable": true
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "companyStages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "workModel": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "radiusRange": {
+            "type": "number",
+            "format": "float"
+          },
+          "daysAgo": {
+            "type": "integer",
+            "description": "default to 3, represents jobs within 3 day (72 hours)",
+            "default": 3
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/swan/gpts/oneline/parse": {
+      "post": {
+        "description": "Parse user's search preference",
+        "operationId": "ParseSearchPreference",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oneLineInput": {
+                    "type": "string",
+                    "description": "One sentence input from user to describe the job search preference"
+                  },
+                  "visitId": {
+                    "type": "string",
+                    "description": "An ID to identify user's identity, can hardcode to '4096' for now"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Indicates if the request was successful"
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "description": "Error code, 10000 for success"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "description": "Error message if applicable"
+                    },
+                    "result": {
+                      "type": "object",
+                      "description": "Filter conditions returned by the server",
+                      "properties": {
+                        "filterResult": {
+                          "$ref": "#/components/schemas/FilterCondition"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/swan/gpts/job/search": {
+      "post": {
+        "description": "Search for jobs based on various filters",
+        "operationId": "JobSearch",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "startPos": {
+                    "type": "integer",
+                    "description": "The starting position for the search results. This parameter could be for simple pagination, for example, if user has seen 20 jobs, you can set startPos to 20 for next batch of jobs."
+                  },
+                  "sortCondition": {
+                    "type": "string",
+                    "description": "The condition used for sorting the search results. RELEVANCE is the default value which means sort by relevance, FRESHNESS is sorting by fresheness so that fresh jobs will go first."
+                  },
+                  "filterCondition": {
+                    "$ref": "#/components/schemas/FilterCondition"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful job search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "description": "array of jobs",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "jobResult": {
+                            "type": "object",
+                            "properties": {
+                              "jobId": {
+                                "type": "string"
+                              },
+                              "jobTitle": {
+                                "type": "string"
+                              },
+                              "jobSeniority": {
+                                "type": "string"
+                              },
+                              "jobLocation": {
+                                "type": "string"
+                              },
+                              "isRemote": {
+                                "type": "boolean"
+                              },
+                              "workModel": {
+                                "type": "string"
+                              },
+                              "publishTime": {
+                                "type": "string"
+                              },
+                              "publishTimeDesc": {
+                                "type": "string"
+                              },
+                              "salaryDesc": {
+                                "type": "string"
+                              },
+                              "employmentType": {
+                                "type": "string"
+                              },
+                              "jobSummary": {
+                                "type": "string"
+                              },
+                              "requirements": {
+                                "type": "array",
+                                "description": "List of requirements or qualifications of the job",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "url": {
+                                "type": "string"
+                              },
+                              "applyLink": {
+                                "type": "string"
+                              },
+                              "h1BStatus": {
+                                "type": "string",
+                                "description": "Either Past Sponsorship or Explicit mentioned"
+                              }
+                            }
+                          },
+                          "companyResult": {
+                            "type": "object",
+                            "properties": {
+                              "companyName": {
+                                "type": "string"
+                              },
+                              "companySize": {
+                                "type": "string"
+                              },
+                              "companyDesc": {
+                                "type": "string"
+                              },
+                              "companyCategories": {
+                                "type": "string"
+                              },
+                              "companyURL": {
+                                "type": "string"
+                              },
+                              "fundraisingCurrentStage": {
+                                "type": "string"
+                              },
+                              "fundraisingTotalFunding": {
+                                "type": "string"
+                              },
+                              "grating": {
+                                "type": "object",
+                                "description": "glassdoor rating"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

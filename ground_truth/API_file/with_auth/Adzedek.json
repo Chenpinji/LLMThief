@@ -1,0 +1,72 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Adzedek API",
+    "description": "This API is used to fetch advertisements to show.",
+    "version": "1.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.adzedek.com",
+      "description": "Main Adzedek API server"
+    }
+  ],
+  "paths": {
+    "/fetch_ad_to_show_GPTs/1716781103050x920183893303230500": {
+      "get": {
+        "operationId": "fetchAdToShowGPTs",
+        "summary": "Fetch an advertisement to show",
+        "description": "Retrieves advertisement details including id and text.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "conversation_context",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The full user input. If this is the first message in the conversation, add \"[start]\" before the string, otherwise add \"[continue]\" before the string."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON object containing the advertisement details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "adzedek-api"
+      }
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "B12 AI Websites",
+    "description": "Create a professional, engaging, and user-friendly website for your business in seconds using AI.",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://b12.io/plugins"
+    }
+  ],
+  "paths": {
+    "/openai-gpt/create-website/website-generator": {
+      "post": {
+        "operationId": "createWebsite",
+        "summary": "Create a website for the business",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createWebsiteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createWebsiteResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "createWebsiteResponse": {
+        "type": "object",
+        "required": [
+          "link",
+          "business_name",
+          "cid"
+        ],
+        "properties": {
+          "link": {
+            "type": "string",
+            "description": "The link to claim newly designed website."
+          },
+          "business_name": {
+            "type": "string",
+            "description": "The name of the business."
+          },
+          "cid": {
+            "type": "string",
+            "description": "The unique conversation ID."
+          }
+        }
+      },
+      "createWebsiteRequest": {
+        "type": "object",
+        "required": [
+          "business_name",
+          "business_description",
+          "website_hero_subtitle",
+          "cid",
+          "first_chat_message"
+        ],
+        "properties": {
+          "business_name": {
+            "type": "string",
+            "description": "The name of the business."
+          },
+          "business_description": {
+            "type": "string",
+            "description": "The short description of the business in less than 1000 characters."
+          },
+          "cid": {
+            "type": "string",
+            "description": "cid received in previous create website response."
+          },
+          "first_chat_message": {
+            "type": "string",
+            "description": "The exact first chat message in this conversation."
+          },
+          "website_hero_subtitle": {
+            "type": "string",
+            "description": "The short and catchy subtitle for hero section of the website in less than 5-10 words. It should capture the goal of the website. It should never mention anything about the website color, style or structure."
+          }
+        }
+      }
+    }
+  }
+}

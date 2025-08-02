@@ -1,0 +1,272 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "crewAI custom GPT API",
+    "description": "API for supporting crewAI GPT",
+    "version": "0.1"
+  },
+  "servers": [
+    {
+      "url": "https://crew-ai-custom-gpt-crewai.replit.app",
+      "description": "Main API server"
+    }
+  ],
+  "paths": {
+    "/read_crewai_code/{code_class}": {
+      "get": {
+        "summary": "Read Code",
+        "operationId": "read_code_read_crewai_code__code_class__get",
+        "parameters": [
+          {
+            "name": "code_class",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code Class",
+              "enum": [
+                "agent",
+                "task",
+                "crew",
+                "process"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/crewai_tools": {
+      "get": {
+        "summary": "Crewai Tools",
+        "operationId": "crewai_tools_crewai_tools_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/crewai_tools/{tool}/example": {
+      "get": {
+        "summary": "Crewai Tool Example",
+        "operationId": "crewai_tool_example_crewai_tools__tool__example_get",
+        "parameters": [
+          {
+            "name": "tool",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Tool Class Namer",
+              "enum": [
+                "CodeDocsSearchTool",
+                "CSVSearchTool",
+                "DirectorySearchTool",
+                "DOCXSearchTool",
+                "DirectoryReadTool",
+                "FileReadTool",
+                "GithubSearchTool",
+                "SerperDevTool",
+                "TXTSearchTool",
+                "JSONSearchTool",
+                "MDXSearchTool",
+                "PDFSearchTool",
+                "PGSearchTool",
+                "RagTool",
+                "ScrapeElementFromWebsiteTool",
+                "ScrapeWebsiteTool",
+                "SeleniumScrapingTool",
+                "WebsiteSearchTool",
+                "XMLSearchTool",
+                "YoutubeChannelSearchTool",
+                "YoutubeVideoSearchTool"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent_examples/{type}": {
+      "get": {
+        "summary": "Agent Examples",
+        "operationId": "agent_examples_agent_examples__type__get",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Type",
+              "enum": [
+                "travel_related_examples",
+                "financial_related_examples",
+                "landing_page_generation_related_examples",
+                "marketing_related_examples",
+                "game_generation_related_examples"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task_examples/{type}": {
+      "get": {
+        "summary": "Task Examples",
+        "operationId": "task_examples_task_examples__type__get",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Type",
+              "enum": [
+                "travel_related_examples",
+                "financial_related_examples",
+                "marketing_related_examples",
+                "game_generation_related_examples"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

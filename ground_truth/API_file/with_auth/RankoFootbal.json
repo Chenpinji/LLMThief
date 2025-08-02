@@ -1,0 +1,186 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API Football Fixtures",
+    "description": "API endpoint to retrieve football fixtures information.",
+    "version": "v1.0"
+  },
+  "servers": [
+    {
+      "url": "https://v3.football.api-sports.io",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/fixtures": {
+      "get": {
+        "summary": "Retrieve football fixtures information",
+        "operationId": "getFixtures",
+        "tags": [
+          "fixtures"
+        ],
+        "parameters": [
+          {
+            "name": "league",
+            "in": "query",
+            "required": true,
+            "description": "League ID to filter the fixtures",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "description": "Fromdate to filter the fixtures",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "description": "Todate to filter the fixtures",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "season",
+            "in": "query",
+            "required": true,
+            "description": "Season year to filter the fixtures",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with fixtures data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "fixture_id": {
+                        "type": "integer",
+                        "description": "Unique identifier for the fixture"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "rapidAPIKey": []
+          }
+        ]
+      }
+    },
+    "/players": {
+      "get": {
+        "summary": "Retrieve players information",
+        "operationId": "getPlayers",
+        "tags": [
+          "players"
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Search term for player names",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "league",
+            "in": "query",
+            "required": false,
+            "description": "League ID to filter the players",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "description": "Team ID to filter the players",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "season",
+            "in": "query",
+            "required": true,
+            "description": "Season year to filter the players",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with players data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "player_id": {
+                        "type": "integer",
+                        "description": "Unique identifier for the player"
+                      },
+                      "id": {
+                        "type": "integer",
+                        "hidden": true,
+                        "description": "Unique identifier for the player"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "rapidAPIKey": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "rapidAPIKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-RapidAPI-Key"
+      }
+    }
+  }
+}

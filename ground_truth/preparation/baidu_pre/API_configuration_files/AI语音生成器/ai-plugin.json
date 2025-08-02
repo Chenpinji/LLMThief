@@ -1,0 +1,20 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "AI语音生成器",
+    "name_for_model": "voice_generator",
+    "description_for_human": "将文本内容转换为高质量语音文件，支持下载生成的音频",
+    "description_for_model": "当用户需要将文字内容转换为语音时使用此插件。接收用户提供的文本(transcript)，生成对应的语音文件并返回可访问的URL。",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "PLUGIN_HOST/.well-known/openapi.yaml"
+    },
+    "logo_url": "https://lingjing-online.cdn.bcebos.com/v1/lingjing-online/plugin_logo/2025-06-13/bc65bd54-9a67-4f15-819e-aca7d998609b.jpg%26ehk%3DnetN2qzcCVS4ALUQfDOwxAwFcy41oxC%252b0xTFvOYy5ds%253d%26risl%3D%26pid%3DImgRaw%26r%3D0",
+    "contact_email": "support@voice.example.com",
+    "legal_info_url": "https://voice.example.com/legal",
+    "examples": {
+        "url": "PLUGIN_HOST/example.yaml"
+    }
+}

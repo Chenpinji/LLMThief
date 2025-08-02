@@ -1,0 +1,75 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "DBnomics API",
+    "description": "API to search DBnomics database.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.db.nomics.world/v22",
+      "description": "DBnomics API Server"
+    }
+  ],
+  "paths": {
+    "/search": {
+      "get": {
+        "operationId": "searchDBnomics",
+        "summary": "Search in the DBnomics database.",
+        "description": "Search for data in the DBnomics database using a keyword.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit for number of results",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset for the results",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "The search keyword",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON response with search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

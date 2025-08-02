@@ -1,0 +1,56 @@
+info:
+  title: Relevance AI Tools
+  version: latest
+  description: Search the internet for the latest information about a topic
+paths:
+  /studios/b4819f7f-32ed-4ac0-821f-5f609fa48d0c/trigger_llm_friendly:
+    post:
+      operationId: Google_search
+      summary: Google search
+      description: Search the internet for the latest information about a topic
+      security:
+      - AuthorizationHeader: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/b4819f7f-32ed-4ac0-821f-5f609fa48d0cRequestBodySchema'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json: {}
+openapi: 3.0.1
+servers:
+- url: https://agents.relevance.ai/f1db6c/latest
+components:
+  schemas:
+    b4819f7f-32ed-4ac0-821f-5f609fa48d0cRequestBodySchema:
+      properties:
+        search_query:
+          type: string
+          description: A really high quality google search prompt
+          # frontend_metadata:
+            # required: true
+          # order: 0
+      required:
+      - search_query
+      type: object
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the
+        form of: project:api_key'
+security:
+- AuthorizationHeader:
+  - Authorization
+
+# Authorization token:23c57e49e42c-45cb-9e47-bb92a81d6af3:sk-YTM1NTFkNDctZjlkMS00MjA4LTg2NTUtODBlNDA5NTMyZTI5
+# API key:sk-YTM1NTFkNDctZjlkMS00MjA4LTg2NTUtODBlNDA5NTMyZTI5
+# Region:f1db6c
+# Project:23c57e49e42c-45cb-9e47-bb92a81d6af3
+# token 为23c57e49e42c-45cb-9e47-bb92a81d6af3:sk-YTM1NTFkNDctZjlkMS00MjA4LTg2NTUtODBlNDA5NTMyZTI5
+#

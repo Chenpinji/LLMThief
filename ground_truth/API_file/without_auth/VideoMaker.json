@@ -1,0 +1,144 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Video GPT by VEED API",
+    "description": "This API is used to create VEED projects.",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://www.veed.io/text-to-video-ap/api"
+    }
+  ],
+  "paths": {
+    "/generate/videogpt": {
+      "post": {
+        "description": "Generate a VEED video project and upload files",
+        "operationId": "GenerateProject",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "flowType"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "flowType": {
+                    "type": "string",
+                    "enum": [
+                      "generative",
+                      "clips",
+                      "docToVideo"
+                    ]
+                  },
+                  "payload": {
+                    "type": "object",
+                    "properties": {
+                      "prompt": {
+                        "type": "string"
+                      },
+                      "videoUrl": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  },
+                  "openaiFileIdRefs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Expected response to a valid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/generate/async": {
+      "post": {
+        "description": "Generate a social VEED video project using a prompt OR script AND voice",
+        "operationId": "GenerateSocialVideoProject",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "script": {
+                    "description": "The video script of the generated video if `prompt` is not provided",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Expected response to a valid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Project": {
+        "description": "A VEED project",
+        "type": "object",
+        "required": [
+          "project"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "project": {
+            "type": "object",
+            "required": [
+              "id",
+              "link"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "link": {
+                "description": "URL to edit the project in the VEED editor",
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

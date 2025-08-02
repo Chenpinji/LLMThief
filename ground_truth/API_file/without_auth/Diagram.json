@@ -1,0 +1,743 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GPT Companion",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://www.blocksandarrows.com",
+      "description": "Development server"
+    }
+  ],
+  "components": {
+    "schemas": {},
+    "parameters": {}
+  },
+  "paths": {
+    "/api/gpt/createGraphDiagram": {
+      "post": {
+        "summary": "Create graph diagram",
+        "operationId": "CreateGraph",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "diagramString": {
+                    "type": "string",
+                    "description": "The string for the chart rendering"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The name of the document in which the diagram will be placed"
+                  },
+                  "diagramColor": {
+                    "type": "string",
+                    "default": "rainbow"
+                  },
+                  "drawStyle": {
+                    "type": "string",
+                    "enum": [
+                      "sketch",
+                      "strict",
+                      "code"
+                    ]
+                  }
+                },
+                "required": [
+                  "diagramString",
+                  "title",
+                  "diagramColor"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diagram successfully rendered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretingTheAPIResponse": {
+                      "type": "string",
+                      "description": "How to reply to the user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error while rendering the diagram",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorMessage": {
+                      "type": "string"
+                    },
+                    "diagramTypeGuides": {
+                      "type": "string",
+                      "description": "look at these guides related to the current chart type, and try to fix the error"
+                    }
+                  },
+                  "required": [
+                    "errorMessage",
+                    "diagramTypeGuides"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gpt/createMindmapDiagram": {
+      "post": {
+        "summary": "Create mindmap diagram",
+        "operationId": "CreateMindmap",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "diagramString": {
+                    "type": "string",
+                    "description": "The string for the chart rendering"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The name of the document in which the diagram will be placed"
+                  },
+                  "diagramColor": {
+                    "type": "string",
+                    "default": "rainbow"
+                  },
+                  "drawStyle": {
+                    "type": "string",
+                    "enum": [
+                      "sketch",
+                      "strict",
+                      "code"
+                    ]
+                  }
+                },
+                "required": [
+                  "diagramString",
+                  "title",
+                  "diagramColor"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diagram successfully rendered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretingTheAPIResponse": {
+                      "type": "string",
+                      "description": "How to reply to the user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error while rendering the diagram",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorMessage": {
+                      "type": "string"
+                    },
+                    "diagramTypeGuides": {
+                      "type": "string",
+                      "description": "look at these guides related to the current chart type, and try to fix the error"
+                    }
+                  },
+                  "required": [
+                    "errorMessage",
+                    "diagramTypeGuides"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gpt/createMindmapDiagramWithImage": {
+      "post": {
+        "summary": "Create graph diagram with user image or generated image",
+        "operationId": "CreateMindmapWithImage",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "diagramString": {
+                    "type": "string",
+                    "description": "The string for the chart rendering"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The name of the document in which the diagram will be placed"
+                  },
+                  "diagramColor": {
+                    "type": "string",
+                    "default": "rainbow"
+                  },
+                  "drawStyle": {
+                    "type": "string",
+                    "enum": [
+                      "sketch",
+                      "strict",
+                      "code"
+                    ]
+                  },
+                  "openaiFileIdRefs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "mime_type": {
+                          "type": "string"
+                        },
+                        "download_link": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "id",
+                        "mime_type",
+                        "download_link"
+                      ]
+                    },
+                    "description": "send the generated or user image with a mindmap diagram."
+                  }
+                },
+                "required": [
+                  "diagramString",
+                  "title",
+                  "diagramColor",
+                  "openaiFileIdRefs"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diagram successfully rendered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretingTheAPIResponse": {
+                      "type": "string",
+                      "description": "How to reply to the user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error while rendering the diagram",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorMessage": {
+                      "type": "string"
+                    },
+                    "diagramTypeGuides": {
+                      "type": "string",
+                      "description": "look at these guides related to the current chart type, and try to fix the error"
+                    }
+                  },
+                  "required": [
+                    "errorMessage",
+                    "diagramTypeGuides"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gpt/createEntityRelationshipDiagram": {
+      "post": {
+        "summary": "Create entity-relationship diagram",
+        "operationId": "CreateEntity",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "diagramString": {
+                    "type": "string",
+                    "description": "The string for the chart rendering"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The name of the document in which the diagram will be placed"
+                  },
+                  "diagramColor": {
+                    "type": "string",
+                    "default": "rainbow"
+                  },
+                  "drawStyle": {
+                    "type": "string",
+                    "enum": [
+                      "sketch",
+                      "strict",
+                      "code"
+                    ]
+                  }
+                },
+                "required": [
+                  "diagramString",
+                  "title",
+                  "diagramColor"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diagram successfully rendered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretingTheAPIResponse": {
+                      "type": "string",
+                      "description": "How to reply to the user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error while rendering the diagram",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorMessage": {
+                      "type": "string"
+                    },
+                    "diagramTypeGuides": {
+                      "type": "string",
+                      "description": "look at these guides related to the current chart type, and try to fix the error"
+                    }
+                  },
+                  "required": [
+                    "errorMessage",
+                    "diagramTypeGuides"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gpt/createSequenceDiagram": {
+      "post": {
+        "summary": "Create sequence diagram",
+        "operationId": "CreateSequence",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "diagramString": {
+                    "type": "string",
+                    "description": "The string for the chart rendering"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The name of the document in which the diagram will be placed"
+                  },
+                  "diagramColor": {
+                    "type": "string",
+                    "default": "rainbow"
+                  },
+                  "drawStyle": {
+                    "type": "string",
+                    "enum": [
+                      "sketch",
+                      "strict",
+                      "code"
+                    ]
+                  }
+                },
+                "required": [
+                  "diagramString",
+                  "title",
+                  "diagramColor"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diagram successfully rendered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretingTheAPIResponse": {
+                      "type": "string",
+                      "description": "How to reply to the user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error while rendering the diagram",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorMessage": {
+                      "type": "string"
+                    },
+                    "diagramTypeGuides": {
+                      "type": "string",
+                      "description": "look at these guides related to the current chart type, and try to fix the error"
+                    }
+                  },
+                  "required": [
+                    "errorMessage",
+                    "diagramTypeGuides"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gpt/createPieChartDiagram": {
+      "post": {
+        "summary": "Create pie chart diagram",
+        "operationId": "CreatePieChart",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "diagramString": {
+                    "type": "string",
+                    "description": "The string for the chart rendering"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The name of the document in which the diagram will be placed"
+                  },
+                  "diagramColor": {
+                    "type": "string",
+                    "default": "rainbow"
+                  },
+                  "drawStyle": {
+                    "type": "string",
+                    "enum": [
+                      "sketch",
+                      "strict",
+                      "code"
+                    ]
+                  }
+                },
+                "required": [
+                  "diagramString",
+                  "title",
+                  "diagramColor"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diagram successfully rendered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretingTheAPIResponse": {
+                      "type": "string",
+                      "description": "How to reply to the user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error while rendering the diagram",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorMessage": {
+                      "type": "string"
+                    },
+                    "diagramTypeGuides": {
+                      "type": "string",
+                      "description": "look at these guides related to the current chart type, and try to fix the error"
+                    }
+                  },
+                  "required": [
+                    "errorMessage",
+                    "diagramTypeGuides"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gpt/createTimelineDiagram": {
+      "post": {
+        "summary": "Create timeline diagram",
+        "operationId": "CreateTimeline",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "diagramString": {
+                    "type": "string",
+                    "description": "The string for the chart rendering"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The name of the document in which the diagram will be placed"
+                  },
+                  "diagramColor": {
+                    "type": "string",
+                    "default": "rainbow"
+                  },
+                  "drawStyle": {
+                    "type": "string",
+                    "enum": [
+                      "sketch",
+                      "strict",
+                      "code"
+                    ]
+                  }
+                },
+                "required": [
+                  "diagramString",
+                  "title",
+                  "diagramColor"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diagram successfully rendered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretingTheAPIResponse": {
+                      "type": "string",
+                      "description": "How to reply to the user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error while rendering the diagram",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorMessage": {
+                      "type": "string"
+                    },
+                    "diagramTypeGuides": {
+                      "type": "string",
+                      "description": "look at these guides related to the current chart type, and try to fix the error"
+                    }
+                  },
+                  "required": [
+                    "errorMessage",
+                    "diagramTypeGuides"
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorMessage": {
+                      "type": "string"
+                    },
+                    "diagramTypeGuides": {
+                      "type": "string",
+                      "description": "look at these guides related to the current chart type, and try to fix the error"
+                    }
+                  },
+                  "required": [
+                    "errorMessage",
+                    "diagramTypeGuides"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/gpt/createClassDiagram": {
+      "post": {
+        "summary": "Create class diagram",
+        "operationId": "CreateClass",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "diagramString": {
+                    "type": "string",
+                    "description": "The string for the chart rendering"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The name of the document in which the diagram will be placed"
+                  },
+                  "diagramColor": {
+                    "type": "string",
+                    "default": "rainbow"
+                  },
+                  "drawStyle": {
+                    "type": "string",
+                    "enum": [
+                      "sketch",
+                      "strict",
+                      "code"
+                    ]
+                  }
+                },
+                "required": [
+                  "diagramString",
+                  "title",
+                  "diagramColor"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diagram successfully rendered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretingTheAPIResponse": {
+                      "type": "string",
+                      "description": "How to reply to the user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error while rendering the diagram",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorMessage": {
+                      "type": "string"
+                    },
+                    "diagramTypeGuides": {
+                      "type": "string",
+                      "description": "look at these guides related to the current chart type, and try to fix the error"
+                    }
+                  },
+                  "required": [
+                    "errorMessage",
+                    "diagramTypeGuides"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "webhooks": {}
+}

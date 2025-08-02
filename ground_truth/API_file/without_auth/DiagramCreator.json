@@ -1,0 +1,44 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Diagram API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://view.diagram.workers.dev"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "operationId": "createDiagram",
+        "summary": "Create a new diagram",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "diagram": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Diagram created successfully"
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

@@ -1,0 +1,168 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Synthesys API",
+    "description": "API for interacting with Synthesys voice synthesis service.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://synthesys.live/api",
+      "description": "Synthesys Voice Synthesis API"
+    }
+  ],
+  "paths": {
+    "/actor/getCustomVoices": {
+      "get": {
+        "operationId": "getCustomVoices",
+        "summary": "Retrieve list of voices or actors",
+        "description": "Retrieves a list of voices or actors available in the Synthesys.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of voices",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomVoicesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actor/generateVoice": {
+      "post": {
+        "operationId": "generateVoice",
+        "summary": "Generate voice content",
+        "description": "Generates voice content based on the provided data.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VoiceGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Voice content generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CustomVoicesResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "actorId": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "VoiceGenerationRequest": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "features": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "actorId": {
+                  "type": "integer"
+                },
+                "language": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "VoiceGenerationResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "actorId": {
+                  "type": "integer"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "language": {
+                  "type": "string"
+                },
+                "features": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "outputUrl": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

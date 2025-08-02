@@ -1,0 +1,39 @@
+version: 0.0.1
+examples:
+  # 示例1：用户要求将文本转为语音
+  - context:
+      - role: user
+        content: 请把这段文字转换成语音："欢迎使用我们的AI语音服务"
+    plugin:
+      operationId: create_audio
+      thoughts: 用户需要将文本内容转换为语音文件
+      requestArguments:
+        transcript: "欢迎使用我们的AI语音服务"
+  
+  # 示例2：用户要求朗读一段内容
+  - context:
+      - role: user
+        content: 请朗读这段文章："人工智能正在改变我们的生活..."
+    plugin:
+      operationId: create_audio
+      thoughts: 用户需要将长文本生成可下载的语音文件
+      requestArguments:
+        transcript: "人工智能正在改变我们的生活..."
+  
+  # 示例3：用户要求生成语音文件
+  - context:
+      - role: user
+        content: 我需要一个语音文件，内容是："您的订单已确认，预计明天送达"
+    plugin:
+      operationId: create_audio
+      thoughts: 用户需要生成特定内容的语音文件用于系统通知
+      requestArguments:
+        transcript: "您的订单已确认，预计明天送达"
+  
+  # 反例：与语音生成无关的请求
+  - context:
+      - role: user
+        content: 如何调整语音的音调？
+      - role: bot
+        plugin:
+          thoughts: 此问题不涉及语音文件生成，无需调用插件

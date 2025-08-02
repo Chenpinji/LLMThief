@@ -1,0 +1,20 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "PPT制作插件",
+    "name_for_model": "slide_maker_gpt",
+    "description_for_human": "A GPT that allows the user to create a presentation.",
+    "description_for_model": "A GPT that allows the user to create a presentation.",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "PLUGIN_HOST/.well-known/openapi.yaml"
+    },
+    "logo_url": "https://lingjing-online.cdn.bcebos.com/v1/lingjing-online/plugin_logo/2025-06-17/4343d82b-f8c2-4a2d-a99f-a43364ac070c.jpg%26ehk%3DnetN2qzcCVS4ALUQfDOwxAwFcy41oxC%252b0xTFvOYy5ds%253d%26risl%3D%26pid%3DImgRaw%26r%3D0",
+    "contact_email": "support@voice.example.com",
+    "legal_info_url": "https://voice.example.com/legal",
+    "examples": {
+        "url": "PLUGIN_HOST/example.yaml"
+    }
+}

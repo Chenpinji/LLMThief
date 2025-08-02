@@ -1,0 +1,280 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Wolfram Language API",
+    "version": "1.0.0",
+    "description": "API for evaluating Wolfram Language code and finding semantic Wolfram Language representations of natural language inputs."
+  },
+  "servers": [
+    {
+      "url": "https://api.wolframcloud.com/"
+    }
+  ],
+  "paths": {
+    "/wl/api/v1/eval-api": {
+      "get": {
+        "operationId": "getWolframCloudResults",
+        "x-openai-location-header": true,
+        "externalDocs": {
+          "description": "Get Wolfram Language documentation here",
+          "url": "https://reference.wolfram.com/language/"
+        },
+        "summary": "Evaluates Wolfram Language code only",
+        "responses": {
+          "200": {
+            "description": "The result of the Wolfram Language evaluation",
+            "content": {
+              "text/plain": {}
+            }
+          },
+          "400": {
+            "description": "The request is missing the 'input' parameter"
+          },
+          "403": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Wolfram Cloud was unable to generate a result"
+          },
+          "503": {
+            "description": "Service temporarily unavailable. This may be the result of too many requests."
+          }
+        },
+        "parameters": [
+          {
+            "name": "input",
+            "in": "query",
+            "description": "Wolfram Language code to be evaluated",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/obj/chatgpt-utilities/getSemanticInterpretationAPI": {
+      "get": {
+        "summary": "Get Semantic Interpretation",
+        "operationId": "getSemanticInterpretationAPI",
+        "description": "Interprets simplified natural language inputs as Wolfram Language entities, entity classes, or more complex reverse-lookups.",
+        "parameters": [
+          {
+            "name": "input",
+            "in": "query",
+            "required": true,
+            "description": "Simplified natural language input to be interpreted.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the interpreted Wolfram Language entity or entity class.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretation": {
+                      "type": "string",
+                      "description": "The interpreted Wolfram Language entity or entity class."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters."
+          }
+        }
+      }
+    },
+    "/obj/chatgpt-utilities/findEntityClassAPI": {
+      "get": {
+        "summary": "Find Wolfram Language EntityClass",
+        "operationId": "findEntityClassAPI",
+        "description": "Returns EntityClass interpretations for a specified type and input.",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "The type of the Wolfram entity for EntityClass interpretation.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "description": "The input for EntityClass interpretation.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the EntityClass interpretation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretation": {
+                      "type": "string",
+                      "description": "The EntityClass interpretation of the provided type and input."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters."
+          }
+        }
+      }
+    },
+    "/obj/chatgpt-utilities/findPropertyAPI": {
+      "get": {
+        "summary": "Find Wolfram Language EntityProperty",
+        "operationId": "findPropertyAPI",
+        "description": "Returns EntityProperty interpretations for a specified type and input.",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "The type of the Wolfram entity for EntityProperty interpretation.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "description": "The input for EntityProperty interpretation.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the EntityProperty interpretation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretation": {
+                      "type": "string",
+                      "description": "The EntityProperty interpretation of the provided type and input."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters."
+          }
+        }
+      }
+    },
+    "/obj/chatgpt-utilities/getDocumentationAPI": {
+      "get": {
+        "summary": "Get Wolfram Language Documentation",
+        "operationId": "getDocumentationAPI",
+        "description": "Returns usage information for Wolfram Language symbols.",
+        "parameters": [
+          {
+            "name": "input",
+            "in": "query",
+            "required": true,
+            "description": "The Wolfram Language symbol for which to retrieve documentation.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the usage information of the symbol.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "documentation": {
+                      "type": "string",
+                      "description": "The usage information of the Wolfram Language symbol."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters."
+          }
+        }
+      }
+    },
+    "/obj/chatgpt-utilities/findEntityAPI": {
+      "get": {
+        "summary": "Find Wolfram Language Entity",
+        "operationId": "findEntityAPI",
+        "description": "Returns Wolfram Language interpretations of a specified entity.",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "The type of the Wolfram entity (e.g., City, Country).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "description": "The name of the entity to be interpreted in Wolfram Language.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the Wolfram Language interpretation of the entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpretation": {
+                      "type": "string",
+                      "description": "The Wolfram Language interpretation of the provided entity."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters."
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

@@ -1,0 +1,75 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AI Text To Speech",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://api.ttsopenai.com"
+    }
+  ],
+  "paths": {
+    "/api/v1/public/gpts/text-to-speech": {
+      "post": {
+        "operationId": "gpts_text_to_speech",
+        "summary": "Convert text to speech",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/gptsTextToSpeechRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/gptsTextToSpeechResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "gptsTextToSpeechRequest": {
+        "required": [
+          "input",
+          "voice"
+        ],
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "example": "This is an example"
+          },
+          "voice": {
+            "type": "string",
+            "example": "Alloy"
+          }
+        }
+      },
+      "gptsTextToSpeechResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "The result."
+          },
+          "result": {
+            "type": "string",
+            "description": "The result url for confirming translation processing status."
+          }
+        }
+      }
+    }
+  }
+}

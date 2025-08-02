@@ -1,0 +1,135 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Spotify Web API",
+    "description": "You can use Spotify's Web API to discover music and podcasts, manage your Spotify library, control audio playback, and much more.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.spotify.com/v1"
+    }
+  ],
+  "paths": {
+    "/search": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "operationId": "search",
+        "summary": "Search for Item\n",
+        "description": "Get Spotify catalog information about albums, artists, playlists, tracks, shows, episodes or audiobooks\nthat match a keyword string.\n",
+        "parameters": [
+          {
+            "name": "q",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "title": "Query",
+              "description": "Your search query.\n\nYou can narrow down your search using field filters. The available filters are `album`, `artist`, `track`, `year`, `upc`, `tag:hipster`, `tag:new`, `isrc`, and `genre`. Each field filter only applies to certain result types.\n\nThe `artist` and `year` filters can be used while searching albums, artists and tracks. You can filter on a single `year` or a range (e.g. 1955-1960).<br />\nThe `album` filter can be used while searching albums and tracks.<br />\nThe `genre` filter can be used while searching artists and tracks.<br />\nThe `isrc` and `track` filters can be used while searching tracks.<br />\nThe `upc`, `tag:new` and `tag:hipster` filters can only be used while searching albums. The `tag:new` filter will return albums released in the past two weeks and `tag:hipster` can be used to return only albums with the lowest 10% popularity.<br />\n",
+              "example": "remaster%20track:Doxy%20artist:Miles%20Davis",
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": true,
+            "explode": false,
+            "in": "query",
+            "schema": {
+              "title": "Item type",
+              "description": "A comma-separated list of item types to search across. Search results include hits\nfrom all the specified item types. For example: `q=abacab&type=album,track` returns\nboth albums and tracks matching \"abacab\".\n",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "album",
+                  "artist",
+                  "playlist",
+                  "track",
+                  "show",
+                  "episode",
+                  "audiobook"
+                ]
+              },
+              "type": "array"
+            }
+          }
+        ]
+      }
+    },
+    "/me/player/currently-playing": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "operationId": "get-the-users-currently-playing-track",
+        "summary": "Get Currently Playing Track\n",
+        "description": "Get the object currently being played on the user's Spotify account.\n",
+        "security": [
+          {
+            "oauth_2_0": [
+              "user-read-currently-playing"
+            ]
+          }
+        ]
+      }
+    },
+    "/me/player/queue": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "operationId": "get-queue",
+        "summary": "Get the User's Queue\n",
+        "description": "Get the list of objects that make up the user's queue.\n",
+        "security": [
+          {
+            "oauth_2_0": [
+              "user-read-playback-state"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Player"
+        ],
+        "operationId": "add-to-queue",
+        "summary": "Add Item to Playback Queue\n",
+        "description": "Add an item to the end of the user's current playback queue.\n",
+        "parameters": [
+          {
+            "name": "uri",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "title": "Spotify URI",
+              "description": "The uri of the item to add to the queue. Must be a track or an episode uri.\n",
+              "example": "spotify:track:4iV5W9uYEdYUVa79Axb7Rh",
+              "type": "string"
+            }
+          },
+          {
+            "name": "device_id",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "title": "Device ID",
+              "description": "The id of the device this command is targeting. If\nnot supplied, the user's currently active device is the target.\n",
+              "example": "0d1841b0976bae2a3a310dd74c0f3df354899bc8",
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "oauth_2_0": [
+              "user-modify-playback-state"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {}
+}

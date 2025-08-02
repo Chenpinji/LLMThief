@@ -1,0 +1,136 @@
+{
+  "components": {
+    "schemas": {
+      "CreateDocumentIndirectlyWithGptRequestV2": {
+        "properties": {
+          "language": {
+            "default": "en",
+            "description": "The two-digit ISO 639-1 code representing the expected human language for the document content.",
+            "title": "Language",
+            "type": "string"
+          },
+          "openaiFileIdRefs": {
+            "default": [],
+            "description": "List of files to use during document generation, such as images or PDF / DOCX / PPTX files for downstream GPT to use for writing document. Each object contains: `name` - name of the file; `id` - identifier for the file; `mime_type` - mime type of the file; `download_link` - the URL to fetch the file.",
+            "items": {},
+            "title": "Openaifileidrefs",
+            "type": "array"
+          },
+          "pageCount": {
+            "default": 5,
+            "description": "The number of document pages (or number of presentation slides) to generate.",
+            "title": "Pagecount",
+            "type": "integer"
+          },
+          "prompt": {
+            "description": "Instructions that will be used by a GPT-3.5 model to create the document. The instructions should be detailed and contain important information.",
+            "title": "Prompt",
+            "type": "string"
+          }
+        },
+        "required": [
+          "prompt"
+        ],
+        "title": "CreateDocumentIndirectlyWithGptRequestV2",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "A GPT that allows the user to create a presentation.",
+    "title": "Slide Maker GPT",
+    "version": "v1"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/create_pptx_indirectly_with_gpt": {
+      "post": {
+        "description": "Create a presentation indirectly by prompting a GPT model specialized for generating long presentations",
+        "operationId": "create_pptx_indirectly_with_gpt",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDocumentIndirectlyWithGptRequestV2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create a presentation indirectly by prompting a GPT model specialized for generating long presentations",
+        "x-openai-isConsequential": false
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://gpt.slides.aidocmaker.com"
+    }
+  ]
+}

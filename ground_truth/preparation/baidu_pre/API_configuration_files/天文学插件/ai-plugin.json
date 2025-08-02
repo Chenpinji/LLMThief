@@ -1,0 +1,20 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "天文学插件",
+    "name_for_model": "Astrologer",
+    "description_for_human": "Plugin for astrological computations",
+    "description_for_model": "Plugin for astrological computations",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "PLUGIN_HOST/.well-known/openapi.yaml"
+    },
+    "logo_url": "https://lingjing-online.cdn.bcebos.com/v1/lingjing-online/plugin_logo/2025-06-17/0307848d-e054-48fb-a439-09687525914f.jpg%26ehk%3DnetN2qzcCVS4ALUQfDOwxAwFcy41oxC%252b0xTFvOYy5ds%253d%26risl%3D%26pid%3DImgRaw%26r%3D0",
+    "contact_email": "support@voice.example.com",
+    "legal_info_url": "https://voice.example.com/legal",
+    "examples": {
+        "url": "PLUGIN_HOST/example.yaml"
+    }
+}

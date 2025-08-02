@@ -1,0 +1,67 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Web Scraper API",
+    "description": "An API for scraping web content and returning it in Markdown format.",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://scrapergpt.replit.app"
+    }
+  ],
+  "paths": {
+    "/scrape": {
+      "post": {
+        "operationId": "scrapeWebContent",
+        "summary": "Scrapes content from a specified URL and returns it in Markdown format.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              },
+              "example": {
+                "url": "https://example.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with the scraped content in Markdown format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "markdown": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid URL or missing URL in the request body."
+          },
+          "500": {
+            "description": "Internal Server Error - Issues with scraping the website."
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

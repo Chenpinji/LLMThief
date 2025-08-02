@@ -1,0 +1,128 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "BeatandRaise API",
+    "description": "Get text snippets from company filings and transcripts based on the user's questions to answer queries related to risk factors, competitors, management discussions, and more. Make sure to list the source URLs when you answer.",
+    "version": "v0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://www.beatandraise.com"
+    }
+  ],
+  "paths": {
+    "/api/getTextSnippets": {
+      "post": {
+        "description": "Get snippets of text, filing dates, and source from company filings to be able to answer user questions such as risk factors, competitors, management discussion based on tickers, named entities, time periods, keywords, likely sources of information, types of forms, and transcript preferences.",
+        "operationId": "getTextSnippetsUsingPOST",
+        "requestBody": {
+          "description": "Request parameters for retrieving text snippets",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "entity": {
+                    "type": "string",
+                    "description": "The entity or entities the user is asking information about, if the user clearly indicates the ticker for e.g $AAPL, then use the ticker, otherwise use the company name."
+                  },
+                  "start_time": {
+                    "type": "string",
+                    "description": "Start date of the period in the format YYYY-MM-DD. For reference, if the user is asking for the latest reports, use a start time of 5 months before the current date."
+                  },
+                  "end_time": {
+                    "type": "string",
+                    "description": "End date of the period in the format YYYY-MM-DD, if no date is specified, use today's date."
+                  },
+                  "keywords": {
+                    "type": "string",
+                    "description": "Comma separated list of keywords as mentioned by the user or inferred from the user's question."
+                  },
+                  "form_specified": {
+                    "type": "string",
+                    "description": "Specifies a form if mentioned by the user, such as '10-Q' or '10-K'. If not specified, return 'none'."
+                  },
+                  "possible_earnings_form": {
+                    "type": "string",
+                    "description": "Specifies forms related to financial information, like '8-K,10-Q,6-K,20-F,40-F,10-K' if not specified by the user."
+                  },
+                  "possible_securities_form": {
+                    "type": "string",
+                    "description": "Specifies forms related to securities registration, like 'S-1,S-11,S-20,S-3,S-4,S-6,S-8' if not specified by the user."
+                  },
+                  "possible_proxy_form": {
+                    "type": "string",
+                    "description": "Specifies forms related to proxy statements, like 'DEF 14A,DEFA14A, DEF 14C' if not specified by the user."
+                  },
+                  "possible_ownership_form": {
+                    "type": "string",
+                    "description": "Specifies forms related to insider transactions, like '4,13-F,SC-13G, SC-13G/A' if not specified by the user."
+                  },
+                  "lastUserMessage": {
+                    "type": "string",
+                    "description": "The entire last message from the user, capturing their entire query or context for analysis."
+                  }
+                },
+                "required": [
+                  "entity",
+                  "start_time",
+                  "end_time",
+                  "keywords",
+                  "lastUserMessage"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "snippet": {
+                            "type": "string"
+                          },
+                          "filingDate": {
+                            "type": "string"
+                          },
+                          "sourceUrl": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

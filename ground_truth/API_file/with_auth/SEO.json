@@ -1,0 +1,54 @@
+{
+  "openapi": "3.1.0",
+  "paths": {
+    "/seo": {
+      "get": {
+        "operationId": "SeoController_analyzeWebsite",
+        "parameters": [
+          {
+            "name": "url",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "Quanthium SEO",
+    "description": "This is the Quanthium SEO API documentation, ready for SEO analysis",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "api",
+      "description": ""
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://seo.api.quanthium.io",
+      "description": "SEO Analyzer on Quanthium.io"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "plain",
+        "type": "apiKey",
+        "name": "Authorization"
+      }
+    },
+    "schemas": {}
+  }
+}

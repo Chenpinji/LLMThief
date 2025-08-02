@@ -1,0 +1,171 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Transcript Information API",
+    "description": "API for retrieving detailed information on keywords.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://seorule.kr",
+      "description": "Main API server"
+    }
+  ],
+  "paths": {
+    "/youtube_transcript_info": {
+      "get": {
+        "operationId": "getYoutubeTranscriptInfo",
+        "summary": "Retrieves detailed information for specific youtube transcript.",
+        "parameters": [
+          {
+            "name": "video_id",
+            "in": "query",
+            "required": true,
+            "description": "The youtube video id to search for.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with detailed youtube transcript information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "transcript": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/naver_blog_transcript_info": {
+      "get": {
+        "operationId": "getNaverBlogTranscriptInfo",
+        "summary": "Retrieves detailed information for specific naver blog transcript.",
+        "parameters": [
+          {
+            "name": "blog_id",
+            "in": "query",
+            "required": true,
+            "description": "The naver blog id to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "content_id",
+            "in": "query",
+            "required": true,
+            "description": "The naver blog content id to search for.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with detailed naver blog transcript information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "transcript": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/naver_news_transcript_info": {
+      "get": {
+        "operationId": "getNaverNewsTranscriptInfo",
+        "summary": "Retrieves detailed information for specific naver news transcript.",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "required": true,
+            "description": "The naver media company id to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "content_id",
+            "in": "query",
+            "required": true,
+            "description": "The naver news content id to search for.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with detailed naver news transcript information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "transcript": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/website_transcript_info": {
+      "get": {
+        "operationId": "getWebsiteTranscriptInfo",
+        "summary": "Retrieves detailed information for specific website transcript.",
+        "parameters": [
+          {
+            "name": "target_url",
+            "in": "query",
+            "required": true,
+            "description": "The target website URL to extract text from.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with detailed website transcript information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "website_transcript": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

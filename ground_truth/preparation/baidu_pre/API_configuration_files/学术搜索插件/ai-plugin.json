@@ -1,0 +1,22 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "学术搜索插件",
+    "name_for_model": "research_plugin",
+    "description_for_human": "This plugin can do academic research on various topics",
+    "description_for_model": "This plugin can do academic research on various topics",
+    "auth": {
+        "type": "service_http",
+        "authorization_type": "Basic",
+        "need_timestamp": 0
+    },
+    "api": {
+        "type": "openapi",
+        "url": "PLUGIN_HOST/.well-known/openapi.yaml"
+    },
+    "logo_url": "https://th.bing.com/th/id/R.987f582c510be58755c4933cda68d525?rik=C0D21hJDYvXosw&riu=http%3a%2f%2fimg.pconline.com.cn%2fimages%2fupload%2fupc%2ftx%2fwallpaper%2f1305%2f16%2fc4%2f20990657_1368686545122.jpg&ehk=netN2qzcCVS4ALUQfDOwxAwFcy41oxC%2b0xTFvOYy5ds%3d&risl=&pid=ImgRaw&r=0",
+    "contact_email": "support@voice.example.com",
+    "legal_info_url": "https://voice.example.com/legal",
+    "examples": {
+        "url": "PLUGIN_HOST/example.yaml"
+    }
+}

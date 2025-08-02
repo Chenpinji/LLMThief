@@ -1,0 +1,265 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Diagram to Image API",
+    "description": "A simple API to generate flowchart, mindmap, or sequence diagram images."
+  },
+  "servers": [
+    {
+      "url": "https://whimsical.com/api"
+    }
+  ],
+  "paths": {
+    "/ai.chatgpt.render-flowchart": {
+      "post": {
+        "operationId": "postRenderFlowchart",
+        "x-openai-isConsequential": false,
+        "summary": "Renders a flowchart",
+        "description": "Accepts a string describing a flowchart and returns a URL to a rendered image",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlowchartRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "URL to the rendered image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowchartResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid flowchart syntax provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai.chatgpt.render-mindmap": {
+      "post": {
+        "operationId": "postRenderMindmap",
+        "x-openai-isConsequential": false,
+        "summary": "Render markdown bullet list as a mindmap",
+        "description": "Accepts a markdown bullet list and returns a URL to a rendered image",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MindmapRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "URL to the rendered image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MindmapResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid markdown string provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai.chatgpt.render-sequence-diagram": {
+      "post": {
+        "operationId": "postRenderSequenceDiagram",
+        "x-openai-isConsequential": false,
+        "summary": "Render a sequence diagram",
+        "description": "Accepts a string describing a sequence diagram and returns a URL to a rendered image",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SequenceDiagramRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "URL to the rendered image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SequenceDiagramResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid sequence diagram syntax provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FlowchartRequest": {
+        "type": "object",
+        "properties": {
+          "mermaid": {
+            "type": "string",
+            "description": "Flowchart to be rendered, in Mermaid syntax"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the flowchart"
+          }
+        },
+        "required": [
+          "mermaid"
+        ]
+      },
+      "FlowchartResponse": {
+        "type": "object",
+        "properties": {
+          "imageURL": {
+            "type": "string",
+            "description": "URL of the rendered image"
+          },
+          "fileURL": {
+            "type": "string",
+            "description": "URL of the file in Whimsical"
+          }
+        }
+      },
+      "MindmapRequest": {
+        "type": "object",
+        "properties": {
+          "markdown": {
+            "type": "string",
+            "description": "Indented, markdown bullet list of mindmap nodes"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the mindmap"
+          }
+        },
+        "required": [
+          "markdown"
+        ]
+      },
+      "MindmapResponse": {
+        "type": "object",
+        "properties": {
+          "imageURL": {
+            "type": "string",
+            "description": "URL of the rendered image"
+          },
+          "fileURL": {
+            "type": "string",
+            "description": "URL of the file in Whimsical"
+          }
+        }
+      },
+      "SequenceDiagramRequest": {
+        "type": "object",
+        "properties": {
+          "diagram": {
+            "type": "string",
+            "description": "Sequence diagram to be rendered"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the sequence diagram"
+          }
+        },
+        "required": [
+          "diagram"
+        ]
+      },
+      "SequenceDiagramResponse": {
+        "type": "object",
+        "properties": {
+          "imageURL": {
+            "type": "string",
+            "description": "URL of the rendered image"
+          },
+          "fileURL": {
+            "type": "string",
+            "description": "URL of the file in Whimsical"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      }
+    }
+  }
+}

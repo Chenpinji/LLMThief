@@ -1,0 +1,329 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PlaylistAI for Spotify",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://spotify.playlistai.app"
+    }
+  ],
+  "paths": {
+    "/api/playlist": {
+      "post": {
+        "summary": "Create a Spotify playlist",
+        "operationId": "createPost",
+        "x-openai-isConsequential": false,
+        "description": "Endpoint to create a playlist based on provided song names and title.",
+        "requestBody": {
+          "description": "Song names and title to create a playlist",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "songNames": {
+                    "type": "string",
+                    "description": "Comma separated list of song and artist names in this format: <song name> - <artist name>"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "A suggested title for the playlist"
+                  },
+                  "playlistPrompt": {
+                    "type": "string",
+                    "description": "A copy of the prompt the user entered to create the playlist"
+                  }
+                },
+                "required": [
+                  "songNames",
+                  "title",
+                  "playlistPrompt"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The new playlist url",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "playlistUrl": {
+                      "type": "string",
+                      "description": "The url of the playlist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The user exceeded the number of playlists that they can create for free. Read them the paymentUrl",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "paymentUrl": {
+                      "type": "string",
+                      "description": "The url to go to to purchase unlimited playlists"
+                    },
+                    "supportEmail": {
+                      "type": "string",
+                      "description": "The support email that the user can contact for help or questions"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message that should be read to the user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playlist/songs": {
+      "get": {
+        "summary": "Get songs from a Spotify playlist",
+        "operationId": "getSongs",
+        "description": "Retrieve songs from a given Spotify playlist URL.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "description": "URL to a playlist on the Spotify platform.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "songs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "Song in the format of <song name> - <artist name>"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Playlist not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message indicating the playlist was not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/playlists": {
+      "get": {
+        "summary": "Fetches the playlists for the current user on Spotify and returns the playlist name and link for each playlist.",
+        "description": "Fetches the playlists for the current user on Spotify and returns the playlist name and link for each playlist.",
+        "operationId": "getUsersPlaylists",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Name of the playlist"
+                      },
+                      "link": {
+                        "type": "string",
+                        "description": "Link to the playlist on Spotify"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/user/subscription": {
+      "get": {
+        "summary": "Fetches a URL to manage or cancel the user's subscription to PlaylistAI",
+        "operationId": "manageSubscription",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "A message about managing the subscription"
+                    },
+                    "billingPortalURL": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "A URL that the user can go to to manage their subscription"
+                    },
+                    "customerSupportEmail": {
+                      "type": "string",
+                      "format": "email",
+                      "description": "An email address to contact if you need further help"
+                    }
+                  },
+                  "required": [
+                    "message",
+                    "billingPortalURL",
+                    "customerSupportEmail"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playlist/add": {
+      "post": {
+        "summary": "Add songs to a Spotify playlist",
+        "description": "Adds specified songs to a Spotify playlist based on the provided playlist URL and song names.",
+        "operationId": "playlistAdd",
+        "x-openai-isConsequential": false,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "playlistUrl": {
+                    "type": "string",
+                    "description": "A URL to the playlist to update"
+                  },
+                  "songNames": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Names of the songs to add in this format \"<song name> - <artist name>\""
+                  }
+                },
+                "required": [
+                  "playlistUrl",
+                  "songNames"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Songs added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "playlistUrl": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playlist/remove": {
+      "post": {
+        "summary": "Removes songs from a Spotify playlist",
+        "operationId": "playlistRemove",
+        "x-openai-isConsequential": false,
+        "description": "Removes specified songs from a Spotify playlist based on the provided playlist URL and song names.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "playlistUrl": {
+                    "type": "string",
+                    "description": "A URL to the playlist to update"
+                  },
+                  "songNames": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Names of the songs to remove in this format \"<song name> - <artist name>\""
+                  }
+                },
+                "required": [
+                  "playlistUrl",
+                  "songNames"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Songs removed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "playlistUrl": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

@@ -1,0 +1,561 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Todoist API",
+    "description": "API for managing tasks and projects in Todoist.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.todoist.com/rest/v2"
+    }
+  ],
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "paths": {
+    "/projects": {
+      "get": {
+        "summary": "List projects",
+        "description": "Retrieve a list of all projects.",
+        "operationId": "listProjects",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "A list of projects.",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Personal"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Work"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a project",
+        "description": "Create a new project.",
+        "operationId": "createProject",
+        "x-openai-isConsequential": true,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "name": "New Project"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created project.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 3,
+                  "name": "New Project"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{project_id}": {
+      "get": {
+        "summary": "Get project details",
+        "description": "Retrieve details for a specific project.",
+        "operationId": "getProjectDetails",
+        "x-openai-isConsequential": false,
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The project details.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Personal"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update project",
+        "description": "Update the details of a specific project.",
+        "operationId": "updateProject",
+        "x-openai-isConsequential": true,
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "name": "Updated Project Name"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated project details.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Updated Project Name"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete project",
+        "description": "Delete a specific project.",
+        "operationId": "deleteProject",
+        "x-openai-isConsequential": true,
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Project successfully deleted."
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "summary": "List tasks",
+        "description": "Retrieve a list of all tasks.",
+        "operationId": "listTasks",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "A list of tasks.",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "content": "Buy groceries",
+                    "project_id": 1
+                  },
+                  {
+                    "id": 2,
+                    "content": "Finish report",
+                    "project_id": 2
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a task",
+        "description": "Create a new task.",
+        "operationId": "createTask",
+        "x-openai-isConsequential": true,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "content": "New Task",
+                "project_id": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created task.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 3,
+                  "content": "New Task",
+                  "project_id": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{task_id}": {
+      "get": {
+        "summary": "Get task details",
+        "description": "Retrieve details for a specific task.",
+        "operationId": "getTaskDetails",
+        "x-openai-isConsequential": false,
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The task details.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "content": "Buy groceries",
+                  "project_id": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update task",
+        "description": "Update the details of a specific task.",
+        "operationId": "updateTask",
+        "x-openai-isConsequential": true,
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "content": "Updated Task"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated task details.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "content": "Updated Task",
+                  "project_id": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete task",
+        "description": "Delete a specific task.",
+        "operationId": "deleteTask",
+        "x-openai-isConsequential": true,
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Task successfully deleted."
+          }
+        }
+      }
+    },
+    "/labels": {
+      "get": {
+        "summary": "List labels",
+        "description": "Retrieve a list of all labels.",
+        "operationId": "listLabels",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "A list of labels.",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Home"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Work"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a label",
+        "description": "Create a new label.",
+        "operationId": "createLabel",
+        "x-openai-isConsequential": true,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "name": "New Label"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created label.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 3,
+                  "name": "New Label"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/labels/{label_id}": {
+      "get": {
+        "summary": "Get label details",
+        "description": "Retrieve details for a specific label.",
+        "operationId": "getLabelDetails",
+        "x-openai-isConsequential": false,
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The label details.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Home"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update label",
+        "description": "Update the details of a specific label.",
+        "operationId": "updateLabel",
+        "x-openai-isConsequential": true,
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "name": "Updated Label Name"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated label details.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Updated Label Name"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete label",
+        "description": "Delete a specific label.",
+        "operationId": "deleteLabel",
+        "x-openai-isConsequential": true,
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Label successfully deleted."
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "Get user details",
+        "description": "Retrieve details for the authenticated user.",
+        "operationId": "getUserDetails",
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "The user details.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 12345,
+                  "name": "John Doe",
+                  "email": "john@example.com"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    },
+    "schemas": {
+      "Project": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique identifier for the project."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the project."
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique identifier for the task."
+          },
+          "content": {
+            "type": "string",
+            "description": "The content or description of the task."
+          },
+          "project_id": {
+            "type": "integer",
+            "description": "The ID of the project to which the task belongs."
+          }
+        }
+      },
+      "Label": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique identifier for the label."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the label."
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique identifier for the user."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the user."
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email address of the user."
+          }
+        }
+      }
+    }
+  }
+}

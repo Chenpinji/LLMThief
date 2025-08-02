@@ -1,0 +1,71 @@
+openapi: 3.0.1
+info:
+  title: AI语音生成器
+  description: 提供文本转语音功能，用户提交文本内容即可生成音频文件。
+  version: v1
+servers:
+- url: https://gpt.voice.aidocmaker.com
+paths:
+  /create_audio:
+    post:
+      operationId: createAudio
+      summary: 根据用户提供的文本生成语音音频
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAudioFileRequest'
+      responses:
+        "200":
+          description: 音频生成成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: 生成的音频文件下载地址
+        "422":
+          description: 请求参数验证失败
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    CreateAudioFileRequest:
+      type: object
+      required:
+      - transcript
+      properties:
+        transcript:
+          type: string
+          description: 用于生成音频文件的文本内容
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          description: 验证失败的详细信息
+    ValidationError:
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      properties:
+        loc:
+          type: array
+          items:
+            type: string
+          description: 错误字段的位置
+        msg:
+          type: string
+          description: 错误信息
+        type:
+          type: string
+          description: 错误类型

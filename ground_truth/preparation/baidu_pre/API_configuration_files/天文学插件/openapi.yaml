@@ -1,0 +1,65 @@
+openapi: 3.0.1
+info:
+  title: RohiniAstro API
+  description: API for interacting with astrological data services at RohiniAstro.
+  version: 1.0.0
+servers:
+- url: https://www.rohiniastro.com
+  description: Main API server
+paths:
+  /planets:
+    post:
+      operationId: submitAstroData
+      summary: Submits data for astrological calculations.
+      description: Sends date, time, and location details for astrological computations.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                day:
+                  type: integer
+                  example: 6
+                month:
+                  type: integer
+                  example: 6
+                year:
+                  type: integer
+                  example: 1997
+                hour:
+                  type: integer
+                  example: 5
+                min:
+                  type: integer
+                  example: 10
+                lat:
+                  type: number
+                  format: float
+                  example: 26.85
+                lon:
+                  type: number
+                  format: float
+                  example: 80.94
+      responses:
+        '200':
+          description: Successfully received the data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Data received successfully
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+components: {}

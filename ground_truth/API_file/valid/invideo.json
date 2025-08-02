@@ -1,0 +1,193 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "invideo AI",
+    "description": "Plugin for crafting narrated videos from text prompts and scripts.",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://video-ai.invideo.io"
+    }
+  ],
+  "paths": {
+    "/api/copilot/request/chatgpt-new-from-brief": {
+      "post": {
+        "operationId": "generateVideoFromBrief",
+        "summary": "Generate video from a detailed brief.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoFromBriefInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/copilot/request/chatgpt-new-from-script": {
+      "post": {
+        "operationId": "generateVideoFromScript",
+        "summary": "Generate video from a script.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoFromScriptInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "VideoFromBriefInput": {
+        "type": "object",
+        "properties": {
+          "brief": {
+            "type": "string",
+            "description": "Plain english text starting with \"Create a video\" or \"Create a [platform] video\""
+          },
+          "settings": {
+            "type": "string",
+            "description": "Plain english text covering instructions such as gender and accent of the voiceover, tone of the background music. Can be left empty."
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "platforms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "suggest three platforms this video would be ideal for"
+          },
+          "audiences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "suggest three audiences this video would be ideal for"
+          },
+          "length_in_minutes": {
+            "type": "number",
+            "description": "suggest the length of the video in minutes"
+          },
+          "openaiFileIdRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "list of images to include in the video. These should be created by DALL·E or uploaded by the user. JPG, WEBP, and PNG are supported"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "platforms",
+          "audiences",
+          "length_in_minutes",
+          "brief",
+          "settings"
+        ]
+      },
+      "VideoFromScriptInput": {
+        "type": "object",
+        "properties": {
+          "script": {
+            "type": "string",
+            "description": "plain english text that is the script of the video"
+          },
+          "settings": {
+            "type": "string",
+            "description": "Plain english text covering instructions such as gender and accent of the voiceover, tone of the background music. Can be left empty."
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "platforms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "suggest three platforms this video would be ideal for"
+          },
+          "audiences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "suggest three audiences this video would be ideal for"
+          },
+          "length_in_minutes": {
+            "type": "number",
+            "description": "suggest the length of the video in minutes"
+          },
+          "openaiFileIdRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "list of images to include in the video. These should be created by DALL·E or uploaded by the user. JPG, WEBP, and PNG are supported"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "platforms",
+          "audiences",
+          "length_in_minutes",
+          "script",
+          "settings"
+        ]
+      },
+      "VideoResponse": {
+        "type": "object",
+        "properties": {
+          "video_url": {
+            "type": "string",
+            "description": "Show title as markdown link and say click here: [video_title](video_url)"
+          },
+          "thumbnail_url": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
