@@ -1,7 +1,8 @@
 # Configuration-Leaking-on-LLM-APP-Store
 In this repository, we propose LLMThief, an end-to-end framework designed for red teamers to systematically understand and identify configuration leaking vulnerabilities in LLM app stores. Compared to prior work that treated LLM apps merely as conversational interfaces, our key insight is to view the LLM app store as a unified, integrated system. This system-level security perspective enables us to identify a richer attack surface, leveraging extra knowledge to develop more effective attacks. 
 
-In this repository, we publicly release all the source code of LLMThief to support future research. We also hope that LLMThief can be widely adopted in red-team testing to help enhance the security of LLM app stores.
+👉👉👉
+We publicly release all the source code of LLMThief to support future research. We also hope that LLMThief can be widely adopted in red-team testing to help enhance the security of LLM app stores.
 
 ## Major Advantage of LLMThief
 
