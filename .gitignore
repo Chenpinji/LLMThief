@@ -1,0 +1,9 @@
+.DS_Store
+.env
+ground_truth/
+.env copy
+.vscode/
+chrome-usr-dir/
+mutation_explorer/
+__pycache__/
+utils/
