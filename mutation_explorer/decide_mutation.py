@@ -115,7 +115,7 @@ def genetic_algorithm(shadow_url, shadow_ground_truth, shadow_seeds, platform):
         for chromosome in population:
             chromosome.score = chromosome.score / shadow_num
             print(chromosome.score)
-        assert False
+        # assert False
         sum_score = 0
         for i in range(int(desired_population_size / 4)):
             sum_score += population[i].score

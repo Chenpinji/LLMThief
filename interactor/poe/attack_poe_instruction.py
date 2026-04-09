@@ -34,25 +34,25 @@ def calculate_ss(reference, candidate):
     return float(ss)
 
 
-options = Options()
-directory = os.getenv('user_data_directory')
-options.add_argument(f"user-data-dir={directory}")
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service, options=options)
-wait = WebDriverWait(driver, 20)
-longwait = WebDriverWait(driver, 120)
-driver.get("https://poe.com")
+# options = Options()
+# directory = os.getenv('user_data_directory')
+# options.add_argument(f"user-data-dir={directory}")
+# service = Service(ChromeDriverManager().install())
+# driver = webdriver.Chrome(service=service, options=options)
+# wait = WebDriverWait(driver, 20)
+# longwait = WebDriverWait(driver, 120)
+# driver.get("https://poe.com")
 
 
-cookies = []
-for item in cookie.split('; '):
-    name, value = item.split('=', 1)
-    cookies.append({"name": name, "value": value})
+# cookies = []
+# for item in cookie.split('; '):
+#     name, value = item.split('=', 1)
+#     cookies.append({"name": name, "value": value})
 
-for cookie in cookies:
-    driver.add_cookie(cookie)
+# for cookie in cookies:
+#     driver.add_cookie(cookie)
 
-driver.get("https://poe.com/explore?category=AI")
+# driver.get("https://poe.com/explore?category=AI")
 
 
 # ------------------------------------------finish initialization----------------------------------------
@@ -179,6 +179,81 @@ def input2LLM(attack_prompt):
     print(response)
     return response
 
+def calculate_lcs(reference, candidate):    
+    target_tokens = list(jieba.cut(reference))
+    reconstructed_tokens = list(jieba.cut(candidate))
+    target_text = " ".join(target_tokens)
+    reconstructed_text = " ".join(reconstructed_tokens)
+
+    scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=False)
+    scores = scorer.score(target_text, reconstructed_text)
+    rouge_l_recall = scores['rougeL'].recall
+    return rouge_l_recall # >= 0.9
+
+def mutation_interaction(prompt, url, ground_truth):
+    # time.sleep(5)
+    modelname = url.split("/")[-1]
+    # driver.get(url)
+    # import fastapi_poe as fp
+    # response = ""
+    # message = fp.ProtocolMessage(role="user", content="hello world")
+    # api_key="OCf4lppYHnwWv6UynAmjvX86vNfvkVVNjBYvG7n4ABk"
+    # api_key = "1fLW30j_a8JbGJh-BUuvpzTmiT9zJi7DGITsw32um5k"
+    # for partial in fp.get_bot_response_sync(
+    #     messages=[message], bot_name=modelname, api_key=api_key
+    # ):
+    #     print("========" * 5)
+    #     print(partial)
+    # raise Exception("test")
+        # response += partial
+    # print(response)
+    client = OpenAI(
+        api_key="1fLW30j_a8JbGJh-BUuvpzTmiT9zJi7DGITsw32um5k", # or os.getenv("POE_API_KEY")
+        base_url="https://api.poe.com/v1",
+    )
+    flag = False
+    while True:
+        try:
+            stream = client.chat.completions.create(
+                model=modelname,  # or other models (Gemini-2.5-Pro, GPT-Image-1, Veo-3, Grok-4..)
+                messages=[
+                    {"role": "user", "content": prompt},
+                ],
+                stream=True,
+            )
+            response = ""
+            for chunk in stream:
+                response += chunk.choices[0].delta.content or ""
+            print(response)
+            flag = True
+        except Exception as e:
+            time.sleep(5)
+            print("error:" + str(e))
+            continue
+        if flag:
+            break
+        
+    # raise Exception("test")
+    # time.sleep(3)
+    # response = input2LLM(prompt)
+    # response = ""
+    # while response == "":
+    #     chat = client.chat.completions.create(
+    #         model=modelname,
+    #         messages=[{"role": "user", "content": prompt}],
+    #     )
+    #     response = chat.choices[0].message.content
+    #     # print(chat)
+    #     print("+++++")
+    #     print(response)
+    #     print("+++++")
+
+    # response = '\n'.join(line.strip() for line in response.splitlines())
+    ss = calculate_ss(ground_truth, response)
+    lcs = calculate_lcs(ground_truth, response)
+    # print(ss)
+    # print(lcs)
+    return max(lcs, ss)
 
 def steal_instruction(attack_prompts, level, ground_truth=None):
     response = ""

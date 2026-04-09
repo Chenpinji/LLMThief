@@ -163,6 +163,30 @@ def input2LLM(attack_prompt):
     print(response)
     return response
 
+def calculate_lcs(reference, candidate):    
+    target_tokens = list(jieba.cut(reference))
+    reconstructed_tokens = list(jieba.cut(candidate))
+    target_text = " ".join(target_tokens)
+    reconstructed_text = " ".join(reconstructed_tokens)
+
+    scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=False)
+    scores = scorer.score(target_text, reconstructed_text)
+    rouge_l_recall = scores['rougeL'].recall
+    return rouge_l_recall # >= 0.9
+
+def mutation_interaction(prompt, url, ground_truth):
+    time.sleep(5)
+    # print(url)
+    driver.get(url)
+    time.sleep(3)
+    response = input2LLM(prompt)
+    response = '\n'.join(line.strip() for line in response.splitlines())
+    ss = calculate_ss(ground_truth, response)
+    lcs = calculate_lcs(ground_truth, response)
+    # print(ss)
+    # print(lcs)
+    return max(lcs, ss)
+
 def steal_instruction(attack_prompts, level, ground_truth=None,url=None):
     response = ""
     fail = 0

@@ -7,7 +7,7 @@ cookie = os.getenv('FLOWGPT_COOKIE')
 if not cookie:
     raise ValueError("FLOWGPT_COOKIE environment variable not set")
 
-from CloudflareBypasser import CloudflareBypasser
+# from CloudflareBypasser import CloudflareBypasser
 import time
 import json
 from DrissionPage import ChromiumPage, ChromiumOptions
@@ -149,31 +149,35 @@ def judge_sucess(response,ori_response,level,ground_truth=None):
         return rouge_l_recall
 
 def input2LLM(attack_prompt):
-    time.sleep(3)
+    # time.sleep(5)
     try:
+        # /html/body/div[1]/div[2]/div/main/div/div/div[1]/div/div[2]/div/div[2]/div/div[2]/div/div[1]/textarea
         driver.wait.eles_loaded("xpath=/html/body/div[1]/div[2]/div[1]/main/div/div/div/div[2]/div[2]/div/div[2]/div/div[2]/button[1]", timeout=5)
         startbtton = driver.ele("xpath=/html/body/div[1]/div[2]/div[1]/main/div/div/div/div[2]/div[2]/div/div[2]/div/div[2]/button[1]")
         startbtton.click()
+        
+
+        time.sleep(5)
+        startbtton = driver.ele("xpath=/html/body/div[1]/div[2]/div[1]/main/div/div/div/div[2]/div[2]/div/div[2]/div/div[2]/button[1]")
         startbtton.click()
         # set model
-        time.sleep(5)
-        driver.wait.eles_loaded('xpath=/html/body/div[1]/div[2]/div/main/div/div/div[2]/div/div/div/div[2]/div[2]/div[1]/div[1]/button/div[1]', timeout=5)
-        model = driver.ele('xpath=/html/body/div[1]/div[2]/div/main/div/div/div[2]/div/div/div/div[2]/div[2]/div[1]/div[1]/button/div[1]')
-        model.click()
-        time.sleep(3)
-        driver.wait.eles_loaded('xpath=/html/body/div[1]/div[2]/div/main/div/div/div[2]/div/div/div/div[2]/div[2]/div[1]/div[1]/div/div/div/div[10]', timeout=5)
-        indivmodel = driver.ele('xpath=/html/body/div[1]/div[2]/div/main/div/div/div[2]/div/div/div/div[2]/div[2]/div[1]/div[1]/div/div/div/div[10]')
-        indivmodel.click()
-        time.sleep(3)
-        driver.wait.eles_loaded('xpath=/html/body/div[12]/div[1]/div/button[3]/span', timeout=5)
-        neomix = driver.ele('xpath=/html/body/div[12]/div[1]/div/button[3]/span')
-        neomix.click()
-        time.sleep(3)
+        # time.sleep(5)
+        # driver.wait.eles_loaded('xpath=/html/body/div[1]/div[2]/div/main/div/div/div[2]/div/div/div/div[2]/div[2]/div[1]/div[1]/button/div[1]', timeout=5)
+        # model = driver.ele('xpath=/html/body/div[1]/div[2]/div/main/div/div/div[2]/div/div/div/div[2]/div[2]/div[1]/div[1]/button/div[1]')
+        # model.click()
+        # time.sleep(3)
+        # driver.wait.eles_loaded('xpath=/html/body/div[1]/div[2]/div/main/div/div/div[2]/div/div/div/div[2]/div[2]/div[1]/div[1]/div/div/div/div[10]', timeout=5)
+        # indivmodel = driver.ele('xpath=/html/body/div[1]/div[2]/div/main/div/div/div[2]/div/div/div/div[2]/div[2]/div[1]/div[1]/div/div/div/div[10]')
+        # indivmodel.click()
+        # time.sleep(3)
+        # driver.wait.eles_loaded('xpath=/html/body/div[12]/div[1]/div/button[3]/span', timeout=5)
+        # neomix = driver.ele('xpath=/html/body/div[12]/div[1]/div/button[3]/span')
+        # neomix.click()
+        # time.sleep(3)
     except:
         pass
     
     try:
-        time.sleep(5)
         driver.wait.eles_loaded('css=svg[aria-label="Save and Start New Chat"]', timeout=5)
         new_chat = driver.ele('css=svg[aria-label="Save and Start New Chat"]')
         new_chat.click()
@@ -185,7 +189,7 @@ def input2LLM(attack_prompt):
         driver.wait.eles_loaded('css=svg[aria-label="Send"]', timeout=5)
         send_button = driver.ele('css=svg[aria-label="Send"]')
         send_button.click()
-        time.sleep(10)
+        time.sleep(30)
         driver.wait.eles_loaded("xpath=/html/body/div[1]/div[2]/div/main/div/div/div[1]/div/div[2]/div/div[1]/div/ul/div/div/li[1]", timeout=10)
         latest_message = driver.ele("xpath=/html/body/div[1]/div[2]/div/main/div/div/div[1]/div/div[2]/div/div[1]/div/ul/div/div/li[1]")
                                         #    /html/body/div[1]/div[2]/div/main/div/div/div[1]/div/div[2]/div/div[1]/div/ul/div/div/li[1]
@@ -213,8 +217,7 @@ def input2LLM(attack_prompt):
         except:
             pass
         time.sleep(0.5)
-    else:
-        return input2LLM(attack_prompt)
+
 
     # except:
     #     print("I'm sorry. Fail")
@@ -223,6 +226,31 @@ def input2LLM(attack_prompt):
     time.sleep(3)
     print(response)
     return response
+
+def calculate_lcs(reference, candidate):    
+    target_tokens = list(jieba.cut(reference))
+    reconstructed_tokens = list(jieba.cut(candidate))
+    target_text = " ".join(target_tokens)
+    reconstructed_text = " ".join(reconstructed_tokens)
+
+    scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=False)
+    scores = scorer.score(target_text, reconstructed_text)
+    rouge_l_recall = scores['rougeL'].recall
+    return rouge_l_recall # >= 0.9
+
+def mutation_interaction(prompt, url, ground_truth):
+    time.sleep(5)
+    # print(url)
+    driver.get(url)
+    time.sleep(5)
+    response = input2LLM(prompt)
+    response = '\n'.join(line.strip() for line in response.splitlines())
+    ground_truth = ground_truth.replace("{{user}}", "Pinji Chen")
+    ss = calculate_ss(ground_truth, response)
+    lcs = calculate_lcs(ground_truth, response)
+    # print(ss)
+    # print(lcs)
+    return max(lcs, ss)
 
 def steal_instruction(attack_prompts, level, ground_truth=None,url=None):
     response = ""

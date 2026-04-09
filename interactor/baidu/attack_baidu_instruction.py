@@ -161,28 +161,35 @@ def clear_chat():
 def input2LLM(attack_prompt):
     # input_box = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "textarea")))
     time.sleep(5)
-    # /html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[2]/div[2]/div[2]/div[2]/textarea
-    # /html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[2]/div[2]/div[2]/div[2]/textarea    
-    input_box = wait.until(EC.presence_of_element_located((By.XPATH,"/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[2]/div[2]/div[2]/div[2]/textarea")))
-    input_box.send_keys(attack_prompt)
+    while True:
+        try:
+            input_box = wait.until(EC.presence_of_element_located((By.XPATH,"/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[2]/div[2]/div[3]/div[2]/textarea")))
+            break
+        except:
+            driver.refresh()
+            time.sleep(5)
+            
+    filtered_prompt = ' '.join(c for c in attack_prompt if ord(c) <= 0xFFFF)
+    input_box.send_keys(filtered_prompt)
     time.sleep(1)
     input_box.send_keys(Keys.RETURN) 
     time.sleep(10)
     try:
-        retry_btn = long_wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.answer-regenerate-wrapper.answer-regenerate-wrapper-interactive")))
+        retry_btn = long_wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[4]/div[1]/div[3]/div[3]/div[1]/div/div/div[2]/div/div/div[3]/div[1]/div/div")))
     except:
-        time.sleep(3)
-        retry_btn = wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[3]/div[1]/div[last()]/div[3]/div/div/div/div/div/div/div[3]/div")))
-
-        clear_chat()
+        # time.sleep(3)
+        # # /html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[4]/div[1]/div[3]/div[3]/div/div/div/div/div/div/div[3]/div
+        # retry_btn = wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[4]/div[1]/div[3]/div[3]/div/div/div/div/div/div/div[3]/div")))
+        # clear_chat()
+        print("flag1")
         return ""
-        
-
     try:
-        output_boxes = long_wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.answer-content-box.chat-answer-content-box > div:first-child")))
-        response = output_boxes[-1].text
+        output_boxes = long_wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[5]/div[1]/div[last()]/div[3]/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/div/div")))
+        response = output_boxes.text
     except:
         try:
+            #/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[5]/div[1]/div[last()]/div[3]/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/div/div
+            #/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[4]/div[1]/div[3]/div[3]/div[1]/div/div/div[2]/div/div/div[1]/div/div/div/div/div/div/div
             output_box = wait.until(EC.presence_of_element_located((By.XPATH,"/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div[last()]/div[3]/div[1]/div/div/div[2]/div/div/div[1]")))
             response = output_box.text
         except:
@@ -191,19 +198,47 @@ def input2LLM(attack_prompt):
                 response = output_box.text
             except:
                 try:
-                    output_box = wait.until(EC.presence_of_element_located((By.XPATH,"/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div[last()]/div[3]/div[1]/div/div/div[2]/div/div/div[1]")))
+                    output_box = wait.until(EC.presence_of_element_located((By.XPATH,"/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[4]/div[1]/div[last()]/div[3]/div[1]/div/div/div[2]/div/div/div[1]")))
                     response = output_box.text
                 except:
                     # time.sleep(100000)
-                    clear_chat()
-                    return ""
+                    try:
+                        output_box = wait.until(EC.presence_of_element_located((By.XPATH,"/html/body/div[1]/div/form/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div/div/div/div[3]/div/div[3]/div/div/div/div/div[1]/div/div/div[1]/div[1]/div[1]/div[last()]/div[3]/div[1]/div/div/div[2]/div/div/div[1]")))
+                        response = output_box.text
+                    except:
+                        print("flag2")
+                        return ""
+                    
             
 
     print("response=",response)
     # time.sleep(5)
-    clear_chat()
+    # clear_chat()
     return response
 
+def calculate_lcs(reference, candidate):    
+    target_tokens = list(jieba.cut(reference))
+    reconstructed_tokens = list(jieba.cut(candidate))
+    target_text = " ".join(target_tokens)
+    reconstructed_text = " ".join(reconstructed_tokens)
+
+    scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=False)
+    scores = scorer.score(target_text, reconstructed_text)
+    rouge_l_recall = scores['rougeL'].recall
+    return rouge_l_recall # >= 0.9
+
+def mutation_interaction(prompt, url, ground_truth):
+    time.sleep(5)
+    # print(url)
+    driver.get(url)
+    time.sleep(3)
+    response = input2LLM(prompt)
+    response = '\n'.join(line.strip() for line in response.splitlines())
+    ss = calculate_ss(ground_truth, response)
+    lcs = calculate_lcs(ground_truth, response)
+    # print(ss)
+    # print(lcs)
+    return max(lcs, ss)
 
 def steal_instruction(attack_prompts, level, ground_truth=None,url=None):
     print("enter steal_instruction,ground_truth=",ground_truth)

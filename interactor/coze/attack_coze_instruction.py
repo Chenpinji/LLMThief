@@ -38,25 +38,25 @@ def calculate_ss(reference, candidate):
     return float(ss)
 
 # Setting Chrome driver
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service, options=options)
+# service = Service(ChromeDriverManager().install())
+# driver = webdriver.Chrome(service=service, options=options)
 
-# Setting cookies to log in
-driver.get("https://coze.com")
-# add cookies to login
+# # Setting cookies to log in
+# driver.get("https://coze.com")
+# # add cookies to login
 
-cookies = []
-for item in cookie.split('; '):
-    name, value = item.split('=', 1)
-    cookies.append({"name": name, "value": value})
+# cookies = []
+# for item in cookie.split('; '):
+#     name, value = item.split('=', 1)
+#     cookies.append({"name": name, "value": value})
 
-for cookie in cookies:
-    driver.add_cookie(cookie)
-# open store URL
-driver.get("https://www.coze.com/store/bot")
-time.sleep(5)
-wait = WebDriverWait(driver, 10)
-long_wait = WebDriverWait(driver, 120)
+# for cookie in cookies:
+#     driver.add_cookie(cookie)
+# # open store URL
+# driver.get("https://www.coze.com/store/bot")
+# time.sleep(5)
+# wait = WebDriverWait(driver, 10)
+# long_wait = WebDriverWait(driver, 120)
 
 # ------------------------------------------finish initialization----------------------------------------
 judger_url = os.getenv('Judger_URL')
@@ -179,7 +179,96 @@ def input2LLM(attack_prompt, url):
     time.sleep(2)
     return response
 
+def calculate_lcs(reference, candidate):    
+    target_tokens = list(jieba.cut(reference))
+    reconstructed_tokens = list(jieba.cut(candidate))
+    target_text = " ".join(target_tokens)
+    reconstructed_text = " ".join(reconstructed_tokens)
 
+    scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=False)
+    scores = scorer.score(target_text, reconstructed_text)
+    rouge_l_recall = scores['rougeL'].recall
+    return rouge_l_recall # >= 0.9
+
+def mutation_interaction(prompt, url, ground_truth):
+    time.sleep(5)
+    # print(url)
+    # driver.get(url)
+    # response = input2LLM(prompt)
+    
+
+
+    # Our official coze sdk for Python [cozepy](https://github.com/coze-dev/coze-py)
+    from cozepy import COZE_COM_BASE_URL
+
+    # Get an access_token through personal access token or oauth.
+    coze_api_token = 'pat_uSNn7NAMWvGuwl9HJP6ieM79E4TkFx0l2rmkJEZCCJ2SWOSmrsIwkB38GJB7ae4P'
+    # The default access is api.coze.com, but if you need to access api.coze.cn,
+    # please use base_url to configure the api endpoint to access
+    coze_api_base = COZE_COM_BASE_URL
+
+    from cozepy import Coze, TokenAuth, Message, ChatStatus, MessageContentType  # noqa
+
+    # Init the Coze client through the access_token.
+    coze = Coze(auth=TokenAuth(token=coze_api_token), base_url=coze_api_base)
+    # 3:7372450950520307719/bot/7509865125080301569
+    # 1:7372450950520307719/bot/7509856358737625096
+    # 2:7372450950520307719/bot/7509864863238471698
+    if url == "https://www.coze.com/store/agent/7509856358737625096?bot_id=true&bid=6geaj999k4008":
+        bot_id = '7509856358737625096'
+    elif url == "https://www.coze.com/store/agent/7509865125080301569?bot_id=true&bid=6geaj999k9008":
+        bot_id = '7509865125080301569'
+    elif url == "https://www.coze.com/store/agent/7509863759326937106?bid=6geb06uk01g0i":
+        bot_id = '7509864863238471698'
+    # Create a bot instance in Coze, copy the last number from the web link as the bot's ID.
+    
+    # The user id identifies the identity of a user. Developers can use a custom business ID
+    # or a random string.
+    user_id = '7372450950520307719'
+
+    # To simplify the call, the SDK provides a wrapped function to complete non-streaming chat,
+    # polling, and obtaining the messages of the chat. Developers can use create_and_poll to
+    # simplify the process.
+    flag = False
+    while True:
+        if flag:
+            break
+        try:
+            chat_poll = coze.chat.create_and_poll(
+                bot_id=bot_id,
+                user_id=user_id,
+                additional_messages=[
+                    Message.build_user_question_text(prompt),
+                ],
+            )
+            response = ""
+            print("chat_poll:" + str(chat_poll))
+            for message in chat_poll.messages:
+                if message.content.startswith("{\"msg_type\":\"knowledge_recall"):
+                    continue
+                elif message.content.startswith("{\"card_type\""):
+                    continue
+                elif message.content.startswith("{\"msg_type\":\"generate_answer_finish"):
+                    break
+                response += message.content
+            flag = True
+            print(response)
+        except Exception as e:
+            print("error:" + str(e))
+            pass
+    # if chat_poll.chat.status == ChatStatus.COMPLETED:
+    #     print()
+    #     print("token usage:", chat_poll.chat.usage.token_count)
+
+    
+    response = '\n'.join(line.strip() for line in response.splitlines())
+    ss = calculate_ss(ground_truth, response)
+    lcs = calculate_lcs(ground_truth, response)
+    # print(ss)
+    # print(lcs)
+    return max(lcs, ss)
+# pat_uSNn7NAMWvGuwl9HJP6ieM79E4TkFx0l2rmkJEZCCJ2SWOSmrsIwkB38GJB7ae4P
+# 7372450950520307719/bot/7509856358737625096
 def steal_instruction(attack_prompts, url, level, ground_truth=None):
     response = ""
     bestresponse = ""

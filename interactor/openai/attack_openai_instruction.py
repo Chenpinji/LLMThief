@@ -7,7 +7,7 @@ cookie = os.getenv('OPENAI_COOKIE')
 if not cookie:
     raise ValueError("OPENAI_COOKIE environment variable not set")
 
-from CloudflareBypasser import CloudflareBypasser
+# from CloudflareBypasser import CloudflareBypasser
 import time
 import json
 from DrissionPage import ChromiumPage, ChromiumOptions
@@ -150,8 +150,8 @@ def judge_sucess(response,ori_response,level,ground_truth=None):
 
 def input2LLM(attack_prompt):
     time.sleep(3)
-    driver.wait.eles_loaded("xpath=/html/body/div[1]/div/div[1]/div[2]/main/div[1]/div/div[3]/div[1]/div/div/div[2]/form/div[1]/div/div[1]/div[1]/div[2]/div/div/div/div/div",timeout=10)
-    input_boxe = driver.ele('xpath=/html/body/div[1]/div/div[1]/div[2]/main/div[1]/div/div[3]/div[1]/div/div/div[2]/form/div[1]/div/div[1]/div[1]/div[2]/div/div/div/div/div')
+    driver.wait.eles_loaded("xpath=/html/body/div[1]/div/div/div[2]/main/div/div/div[2]/div[2]/div/div/div[2]/form/div[2]/div/div[1]/div/div/p",timeout=10)
+    input_boxe = driver.ele('xpath=/html/body/div[1]/div/div/div[2]/main/div/div/div[2]/div[2]/div/div/div[2]/form/div[2]/div/div[1]/div/div/p')
     input_boxe.input(attack_prompt)
     print("input sucess")
     time.sleep(1)
@@ -159,9 +159,9 @@ def input2LLM(attack_prompt):
     send_button = driver.ele("css=button[data-testid='send-button']")
     send_button.click()
     time.sleep(5)
-    driver.wait.eles_loaded("xpath:/html/body/div[1]/div/div[1]/div/main/div/div/div[2]/div/div/div[2]/article[last()]/div/div/div/div/div[2]/div/button[1]", timeout=120)
+    driver.wait.eles_loaded("xpath:/html/body/div[1]/div/div/div[2]/main/div/div/div[1]/div/div/div[2]/article[last()]/div/div/div[2]/div/button[1]", timeout=120)
     time.sleep(1)
-    copy_button_element = driver.ele("xpath:/html/body/div[1]/div/div[1]/div/main/div/div/div[2]/div/div/div[2]/article[last()]/div/div/div/div/div[2]/div/button[1]")
+    copy_button_element = driver.ele("xpath:/html/body/div[1]/div/div/div[2]/main/div/div/div[1]/div/div/div[2]/article[last()]/div/div/div[2]/div/button[1]")
     time.sleep(1)
     driver.run_js("arguments[0].click();",copy_button_element)
     time.sleep(1)
@@ -175,9 +175,32 @@ def input2LLM(attack_prompt):
     # # new_chat.click()
     # driver.run_js("arguments[0].click();", new_chat)
     # time.sleep(5)
-    print(response)
+    # print(response)
     return response
 
+def calculate_lcs(reference, candidate):    
+    target_tokens = list(jieba.cut(reference))
+    reconstructed_tokens = list(jieba.cut(candidate))
+    target_text = " ".join(target_tokens)
+    reconstructed_text = " ".join(reconstructed_tokens)
+
+    scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=False)
+    scores = scorer.score(target_text, reconstructed_text)
+    rouge_l_recall = scores['rougeL'].recall
+    return rouge_l_recall # >= 0.9
+
+def mutation_interaction(prompt, url, ground_truth):
+    time.sleep(5)
+    # print(url)
+    driver.get(url)
+    time.sleep(3)
+    response = input2LLM(prompt)
+    response = '\n'.join(line.strip() for line in response.splitlines())
+    ss = calculate_ss(ground_truth, response)
+    lcs = calculate_lcs(ground_truth, response)
+    # print(ss)
+    # print(lcs)
+    return max(lcs, ss)
 
 def steal_instruction(attack_prompts, level, ground_truth=None,url=None):
     response = ""
