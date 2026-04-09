@@ -10,22 +10,6 @@ In this repository, we propose LLMThief, an end-to-end framework designed for re
 👉👉👉
 We publicly release all the source code of LLMThief to support future research. We also hope that LLMThief can be widely adopted in red-team testing to help enhance the security of LLM app stores.
 
-## Real-World Impact of LLMThief
-
-We have reported security problems found by LLMThief to affected LLM app stores. Up to now: 
-
-- **Baidu** confirmed the vulnerability on the Wenxin app store and provided a **cash reward**. They were interested in the attacks and had an in-depth discussion with us about the specifics. They will arrange a fix for this problem. 
-    
-- **ByteDance** acknowledged our report of Coze and confirmed the vulnerability. We were also invited to participate in a prompt leaking competition held by ByteDance and won a reward of about **$1500**. They informed us that recent efforts to address this issue include providing developers with a prompt leakage prevention feature, which adds defensive prompts to mitigate basic attacks. However, such measures are likely to be less effective against advanced automated attacks like ours. A more comprehensive and robust protection mechanism may be offered by Coze exclusively to enterprise customers.
-
-- **Alibaba** acknowledged our report of Tongyi and awarded the vulnerability with a **bug bounty**. We are still in discussion on how to address this issue.
-
-- **OpenAI** confirmed the vulnerability on the GPT Store. They informed us that they had placed a blocker on our submission to gather additional information from their customers. Their recent mitigation effort includes explicitly warning developers in the interface that uploaded system prompts and knowledge files may be partially or fully exposed.
-
-- **Quora** appreciated our report and considered that the work required to improve Poe on this issue would be significant and may limit normal interactions with the app if they make the input filtering more aggressive. They are making internal efforts to address these issues.
-
-- **FlowGPT** confirmed the vulnerability and they have removed the leaked public starting phrase of the system prompt.  
-
 
 ## Folder Structure
 
